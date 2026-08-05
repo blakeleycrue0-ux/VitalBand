@@ -96,8 +96,8 @@ crashing.
    - `0002_storage.sql` — public `product-images` storage bucket
    - `0003_inventory_rpc.sql` — atomic inventory decrement used by the Stripe webhook
 3. Run `supabase/seed/seed.sql` to load the Smart Bracelet product, its 3
-   variants (Black / Rose Gold / Silver), placeholder images, and clearly-
-   flagged demo reviews/testimonials.
+   variants (Black / Rose Gold / Silver), real product photography (see
+   §Product images below), and clearly-flagged demo reviews/testimonials.
 4. Copy your Project URL + anon public key into `VITE_SUPABASE_URL` /
    `VITE_SUPABASE_ANON_KEY`, and the same URL + **service role** key into
    `SUPABASE_URL` / `SUPABASE_SERVICE_ROLE_KEY`.
@@ -133,14 +133,27 @@ stays confirmed) — see `netlify/functions/utils/fulfillment.js`.
 
 ### Product images
 
-Seeded with `placehold.co` placeholder URLs so the gallery renders out of
-the box. Replace them with real photography either by:
-- uploading to the Supabase Storage `product-images` bucket and using its
-  public URL, or
-- pointing `product_images.url` at any other public image URL.
+Real product photography ships as static files in `public/images/` (so
+they deploy with the site and work at any domain with no Supabase Storage
+setup required):
+- `bracelet-silver-studio.png` — generic/primary studio shot (also used for
+  the Silver variant)
+- `bracelet-black-studio.png` — Black variant studio shot
+- `bracelet-lifestyle-running.png` — lifestyle shot, also used as the
+  homepage hero image
+
+`product_images.url` points at these with root-relative paths
+(`/images/bracelet-silver-studio.png`), which resolve correctly regardless
+of your Netlify domain. **There is no real photo yet for Rose Gold** — it
+intentionally falls back to the generic (non-variant-specific) images
+rather than showing a fabricated one. Add more angles (display close-up,
+strap detail, packaging, a real Rose Gold shot) by dropping them in
+`public/images/` and inserting a row into `product_images` — or switch to
+Supabase Storage's `product-images` bucket instead if you'd rather manage
+photos from the dashboard without a redeploy.
 
 The product page loads images dynamically from `product_images`, so no code
-changes are needed to swap them.
+changes are needed to swap/add photos — only new `product_images` rows.
 
 ---
 
@@ -267,8 +280,11 @@ Controlled by `VITE_NOTIFICATIONS_ENABLED` / `VITE_NOTIFICATIONS_MODE`
 - **Reviews & testimonials**: seeded with `is_demo = true` and rendered with
   a visible "Demo" badge — see `supabase/seed/seed.sql`. Replace with real,
   imported reviews (`is_demo = false`) as they come in.
-- **Product images**: `placehold.co` placeholders. Swap via Supabase Storage
-  or any public image URL (no code changes needed).
+- **Product images**: real photography for the generic/Silver studio shot,
+  Black variant, and a lifestyle shot (`public/images/`). **Rose Gold and
+  extra angles (display close-up, strap detail, packaging) are still
+  missing** — those slots fall back to the generic images rather than
+  showing anything fabricated.
 - **`cj_product_id` / `cj_variant_id`**: left blank — see §3.
 - **Product structured data** (JSON-LD on `product.html`/`index.html`)
   intentionally has **no** `aggregateRating`/`review` schema, so demo review
@@ -308,7 +324,9 @@ Controlled by `VITE_NOTIFICATIONS_ENABLED` / `VITE_NOTIFICATIONS_MODE`
    confirm the order-creation request shape against CJ's current docs in a
    real browser (see §5).
 4. A Stripe account (secret key, publishable key, webhook secret).
-5. Real product photography (replacing the placeholder images).
+5. A real Rose Gold product photo, plus more angles (display close-up,
+   strap detail, packaging) — silver/black studio shots and a lifestyle
+   photo are already in.
 6. Real customer reviews/testimonials, once available, to replace/supplement
    the flagged demo content.
 7. A domain connected in Netlify, so `public/sitemap.xml` can be updated

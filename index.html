@@ -13,7 +13,7 @@
   <meta property="og:site_name" content="VitalBand" />
   <meta property="og:title" content="VitalBand — Your Health, At a Glance" />
   <meta property="og:description" content="Track your heart rate, activity, sleep and more in a sleek everyday bracelet." />
-  <meta property="og:image" content="https://placehold.co/1200x630/0a0a0a/f5f5f0?text=VitalBand" />
+  <meta property="og:image" content="/images/bracelet-lifestyle-running.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,7 +28,7 @@
     "name": "Smart Watch Smart Bracelet Sports Heart Rate",
     "brand": { "@type": "Brand", "name": "VitalBand" },
     "description": "Track your heart rate, activity, sleep and more in a sleek everyday bracelet.",
-    "image": ["https://placehold.co/1200x1500/0a0a0a/f5f5f0?text=VitalBand+1"],
+    "image": ["/images/bracelet-silver-studio.png"],
     "offers": {
       "@type": "Offer",
       "priceCurrency": "EUR",
@@ -108,24 +108,26 @@
   <div class="notification-stack" id="notification-stack" aria-live="polite"></div>
 
   <main id="main-content">
-    <!-- Hero -->
-    <section class="hero container">
+    <!-- Hero: full-bleed image with overlaid content -->
+    <section class="hero">
+      <div class="hero-media">
+        <img id="hero-image" src="/images/bracelet-lifestyle-running.png" alt="VitalBand smart bracelet worn while running outdoors" width="896" height="1200" fetchpriority="high" />
+      </div>
+
+      <div class="hero-badge-row">
+        <span class="badge-pill"><span class="stars-mini">★★★★★</span> 4.9/5 · 2,400+ reviews</span>
+      </div>
+
       <div class="hero-copy reveal">
-        <span class="eyebrow">VitalBand Smart Bracelet</span>
         <h1 class="hero-headline">Your health.<br />At a glance.</h1>
         <p class="hero-sub">Track your heart rate, activity, sleep and more — in a sleek everyday bracelet.</p>
         <div class="hero-actions">
-          <a href="/product.html?slug=smart-bracelet" class="btn btn-primary">Shop now</a>
-          <a href="#features" class="btn btn-secondary">Explore features</a>
+          <a href="/product.html?slug=smart-bracelet" class="btn btn-white btn-lg">Shop now</a>
+          <a href="#features" class="btn btn-secondary btn-lg" style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.4);">Explore features</a>
         </div>
-      </div>
-      <div class="hero-media reveal">
-        <div class="hero-media-frame">
-          <img id="hero-image" src="https://placehold.co/1600x2000/0a0a0a/f5f5f0?text=VitalBand" alt="VitalBand smart bracelet worn on a wrist" width="1600" height="2000" fetchpriority="high" />
-          <div class="hero-stat-card">
-            <div class="value">4.9/5</div>
-            <div class="label">2,400+ reviews</div>
-          </div>
+        <div class="hero-trust-line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg>
+          Free shipping worldwide · 30-day money-back guarantee
         </div>
       </div>
     </section>
@@ -133,10 +135,22 @@
     <!-- Trust bar -->
     <section class="trust-bar">
       <div class="container trust-row">
-        <div class="trust-item"><strong>Free</strong>Shipping worldwide</div>
-        <div class="trust-item"><strong>30-Day</strong>Returns</div>
-        <div class="trust-item"><strong>1-Year</strong>Warranty</div>
-        <div class="trust-item"><strong>Secure</strong>Checkout via Stripe</div>
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h13l-3-3m3 3-3 3"/><rect x="16" y="6" width="5" height="12" rx="1"/></svg></span>
+          <span><strong>Free</strong>Shipping worldwide</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/></svg></span>
+          <span><strong>30-Day</strong>Returns</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/></svg></span>
+          <span><strong>1-Year</strong>Warranty</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg></span>
+          <span><strong>Secure</strong>Checkout via Stripe</span>
+        </div>
       </div>
     </section>
 
@@ -145,7 +159,7 @@
       <div class="container">
         <div class="showcase">
           <div class="showcase-media reveal">
-            <img id="showcase-image" src="https://placehold.co/1200x1500/111111/f5f5f0?text=VitalBand+2" alt="VitalBand smart bracelet detail" loading="lazy" width="1200" height="1500" />
+            <img id="showcase-image" src="/images/bracelet-silver-studio.png" alt="VitalBand smart bracelet detail" loading="lazy" width="896" height="1200" />
           </div>
           <div class="showcase-copy reveal">
             <span class="eyebrow">The Smart Bracelet</span>
@@ -210,10 +224,10 @@
       <div class="container">
         <div class="lifestyle-grid">
           <div class="lifestyle-tile reveal">
-            <img src="https://placehold.co/1000x1250/0a0a0a/f5f5f0?text=VitalBand" alt="VitalBand worn during a morning run" loading="lazy" width="1000" height="1250" />
+            <img src="/images/bracelet-lifestyle-running.png" alt="VitalBand worn during a morning run" loading="lazy" width="896" height="1200" />
           </div>
           <div class="lifestyle-tile reveal">
-            <img src="https://placehold.co/900x560/141414/f5f5f0?text=VitalBand" alt="VitalBand smart bracelet close-up on desk" loading="lazy" width="900" height="560" />
+            <img src="/images/bracelet-black-studio.png" alt="VitalBand smart bracelet, black variant, studio shot" loading="lazy" width="896" height="1200" />
           </div>
           <div class="lifestyle-tile reveal">
             <img src="https://placehold.co/900x560/1a1a1a/f5f5f0?text=VitalBand" alt="VitalBand worn at the gym" loading="lazy" width="900" height="560" />
