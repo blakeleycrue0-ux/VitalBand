@@ -1,0 +1,65 @@
+/* ---------------------------------------------------------------------------
+   Simple content pages: success / track / cancel / 404
+--------------------------------------------------------------------------- */
+.page-simple {
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  align-items: center;
+  padding: var(--space-8) 0;
+}
+
+.page-simple-inner { max-width: 640px; }
+.page-simple .eyebrow { display: block; }
+.page-simple h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: var(--space-3);
+}
+.page-simple p.lead { margin-top: var(--space-4); color: var(--fg-muted); font-size: 16px; max-width: 56ch; }
+
+.track-form {
+  margin-top: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 420px;
+}
+.field-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-muted); margin-bottom: var(--space-2); display: block; }
+.field-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-m);
+  background: var(--bg-elevated);
+  font-size: 15px;
+}
+.field-input:focus { border-color: var(--fg); }
+
+.order-status-card {
+  margin-top: var(--space-7);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  padding: var(--space-6);
+}
+.order-status-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+.order-status-number { font-size: 13px; color: var(--fg-muted); }
+.status-pill {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+}
+.status-track { margin-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); }
+.status-step { display: flex; align-items: center; gap: var(--space-3); font-size: 14px; }
+.status-step .dot { width: 10px; height: 10px; border-radius: 999px; border: 2px solid var(--border-strong); flex-shrink: 0; }
+.status-step.is-done .dot { background: var(--fg); border-color: var(--fg); }
+.status-step.is-current .dot { background: var(--color-accent); border-color: var(--color-accent); }
+.status-step-label { font-weight: 600; }
+.status-step-desc { color: var(--fg-muted); }
+
+.tracking-detail { margin-top: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--border); font-size: 14px; }
+.tracking-detail a { text-decoration: underline; }

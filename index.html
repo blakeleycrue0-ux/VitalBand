@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VitalBand — Your Health, At a Glance | Smart Bracelet</title>
+  <meta name="description" content="Track your heart rate, activity, sleep and more in the VitalBand Smart Bracelet — a sleek, premium everyday fitness tracker. Free shipping, 4.9/5 rated." />
+  <!-- Canonical URL is set client-side (see main.js:setCanonical) to avoid
+       Vite treating a relative link[href] to another page as a build asset. -->
+  <link rel="canonical" id="canonical-link" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="VitalBand" />
+  <meta property="og:title" content="VitalBand — Your Health, At a Glance" />
+  <meta property="og:description" content="Track your heart rate, activity, sleep and more in a sleek everyday bracelet." />
+  <meta property="og:image" content="https://placehold.co/1200x630/0a0a0a/f5f5f0?text=VitalBand" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="/src/css/main.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Smart Watch Smart Bracelet Sports Heart Rate",
+    "brand": { "@type": "Brand", "name": "VitalBand" },
+    "description": "Track your heart rate, activity, sleep and more in a sleek everyday bracelet.",
+    "image": ["https://placehold.co/1200x1500/0a0a0a/f5f5f0?text=VitalBand+1"],
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "EUR",
+      "price": "49.00",
+      "availability": "https://schema.org/InStock",
+      "url": "/product.html?slug=smart-bracelet"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav-row">
+      <button class="icon-btn menu-toggle" data-menu-open aria-label="Open menu"><span></span></button>
+      <a href="/" class="nav-logo">VITALBAND</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/#product">Shop</a>
+        <a href="/#features">Features</a>
+        <a href="/#testimonials">Reviews</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/track.html">Track order</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" data-search-open aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <button class="icon-btn" data-cart-open aria-label="Open cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <span class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu-head">
+      <span class="nav-logo">VITALBAND</span>
+      <button class="icon-btn" data-menu-close aria-label="Close menu">&times;</button>
+    </div>
+    <nav class="mobile-menu-links" aria-label="Mobile">
+      <a href="/#product">Shop</a>
+      <a href="/#features">Features</a>
+      <a href="/#testimonials">Reviews</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/track.html">Track order</a>
+    </nav>
+  </div>
+
+  <div class="drawer-overlay" data-cart-overlay></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-hidden="true" aria-label="Shopping cart">
+    <div class="cart-drawer-head">
+      <h2>Cart</h2>
+      <button class="icon-btn" data-cart-close aria-label="Close cart">&times;</button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-body"></div>
+    <div class="cart-drawer-foot" id="cart-drawer-foot" hidden>
+      <div class="cart-subtotal-row"><span>Subtotal</span><span id="cart-subtotal">&euro;0.00</span></div>
+      <button class="btn btn-primary btn-block" id="cart-checkout-btn" type="button">Checkout</button>
+      <button class="cart-continue" data-cart-close type="button">Continue shopping</button>
+      <p class="cart-note">Shipping calculated at checkout. Payments secured by Stripe.</p>
+    </div>
+  </aside>
+
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <div class="search-overlay-head">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="22" height="22"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="search" id="search-input" class="search-input" placeholder="Search products, features, FAQ…" autocomplete="off" />
+      </div>
+      <button class="icon-btn" data-search-close aria-label="Close search">&times;</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+
+  <div class="notification-stack" id="notification-stack" aria-live="polite"></div>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="hero container">
+      <div class="hero-copy reveal">
+        <span class="eyebrow">VitalBand Smart Bracelet</span>
+        <h1 class="hero-headline">Your health.<br />At a glance.</h1>
+        <p class="hero-sub">Track your heart rate, activity, sleep and more — in a sleek everyday bracelet.</p>
+        <div class="hero-actions">
+          <a href="/product.html?slug=smart-bracelet" class="btn btn-primary">Shop now</a>
+          <a href="#features" class="btn btn-secondary">Explore features</a>
+        </div>
+      </div>
+      <div class="hero-media reveal">
+        <div class="hero-media-frame">
+          <img id="hero-image" src="https://placehold.co/1600x2000/0a0a0a/f5f5f0?text=VitalBand" alt="VitalBand smart bracelet worn on a wrist" width="1600" height="2000" fetchpriority="high" />
+          <div class="hero-stat-card">
+            <div class="value">4.9/5</div>
+            <div class="label">2,400+ reviews</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust bar -->
+    <section class="trust-bar">
+      <div class="container trust-row">
+        <div class="trust-item"><strong>Free</strong>Shipping worldwide</div>
+        <div class="trust-item"><strong>30-Day</strong>Returns</div>
+        <div class="trust-item"><strong>1-Year</strong>Warranty</div>
+        <div class="trust-item"><strong>Secure</strong>Checkout via Stripe</div>
+      </div>
+    </section>
+
+    <!-- Product showcase -->
+    <section class="section" id="product">
+      <div class="container">
+        <div class="showcase">
+          <div class="showcase-media reveal">
+            <img id="showcase-image" src="https://placehold.co/1200x1500/111111/f5f5f0?text=VitalBand+2" alt="VitalBand smart bracelet detail" loading="lazy" width="1200" height="1500" />
+          </div>
+          <div class="showcase-copy reveal">
+            <span class="eyebrow">The Smart Bracelet</span>
+            <h2 class="section-head-title" style="font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-0.02em;margin-top:12px;">Smart Watch Smart Bracelet</h2>
+            <p class="section-head-desc" style="color:var(--fg-muted);margin-top:12px;max-width:48ch;">Continuous heart-rate tracking, sleep analysis and smart notifications in a band light enough to forget you're wearing it.</p>
+            <div class="showcase-price" id="showcase-price">&euro;49.00</div>
+            <div class="showcase-variants" id="showcase-variants" aria-label="Available colors"></div>
+            <div class="showcase-actions">
+              <a href="/product.html?slug=smart-bracelet" class="btn btn-primary">View product</a>
+              <button type="button" class="btn btn-secondary" data-quick-add>Add to cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Why VitalBand</span>
+          <h2>Built for everyday performance.</h2>
+          <p>No unnecessary complexity — just the metrics that matter, delivered clearly.</p>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card reveal">
+            <div class="feature-index">01</div>
+            <h3>Continuous heart rate</h3>
+            <p>Real-time tracking that keeps up with training, recovery and everything in between.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">02</div>
+            <h3>Sleep analysis</h3>
+            <p>Understand your sleep stages and recovery so you can adjust before it affects you.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">03</div>
+            <h3>10-day battery</h3>
+            <p>Built to disappear into daily life — charge on your schedule, not the device's.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">04</div>
+            <h3>Water resistant</h3>
+            <p>Rated for rain, sweat and washing your hands — not built to sit in a drawer.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">05</div>
+            <h3>Smart notifications</h3>
+            <p>Calls, messages and alerts at a glance, without pulling out your phone.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">06</div>
+            <h3>Companion app</h3>
+            <p>Clean, focused reporting — trends over time, not noise.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lifestyle imagery -->
+    <section class="section">
+      <div class="container">
+        <div class="lifestyle-grid">
+          <div class="lifestyle-tile reveal">
+            <img src="https://placehold.co/1000x1250/0a0a0a/f5f5f0?text=VitalBand" alt="VitalBand worn during a morning run" loading="lazy" width="1000" height="1250" />
+          </div>
+          <div class="lifestyle-tile reveal">
+            <img src="https://placehold.co/900x560/141414/f5f5f0?text=VitalBand" alt="VitalBand smart bracelet close-up on desk" loading="lazy" width="900" height="560" />
+          </div>
+          <div class="lifestyle-tile reveal">
+            <img src="https://placehold.co/900x560/1a1a1a/f5f5f0?text=VitalBand" alt="VitalBand worn at the gym" loading="lazy" width="900" height="560" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">How it works</span>
+          <h2>From checkout to your wrist.</h2>
+        </div>
+        <div class="steps-row">
+          <div class="step-card reveal">
+            <div class="step-number">1</div>
+            <h3>Order securely</h3>
+            <p>Checkout is handled entirely by Stripe — VitalBand never sees or stores your card details.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-number">2</div>
+            <h3>We fulfill and ship</h3>
+            <p>Once payment is confirmed, your order is sent for fulfillment and a tracking number is generated.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-number">3</div>
+            <h3>Track and enjoy</h3>
+            <p>Follow your shipment any time from the order tracking page using your order number and email.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" id="testimonials">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Reviews</span>
+          <h2>What people are saying.</h2>
+        </div>
+        <div class="testimonial-track" id="testimonial-track">
+          <div class="skeleton" style="flex:0 0 min(420px,85vw); height:220px;"></div>
+          <div class="skeleton" style="flex:0 0 min(420px,85vw); height:220px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">FAQ</span>
+          <h2>Good to know.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              How long does the battery last?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Up to 10 days on a single charge with typical use, including continuous heart-rate tracking and notifications.</p></div>
+          </div>
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              Is it water resistant?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Yes — it's rated for rain, sweat and hand washing. It is not intended for swimming or submersion.</p></div>
+          </div>
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              What's your return policy?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>30 days from delivery. If it's not right for you, contact support for a straightforward return.</p></div>
+          </div>
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              How do I track my order?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Use the <a href="/track.html" style="text-decoration:underline;">order tracking page</a> with your order number and the email used at checkout.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta surface-dark">
+      <div class="container reveal">
+        <span class="eyebrow">Ready when you are</span>
+        <h2>Your health.<br />At a glance.</h2>
+        <a href="/product.html?slug=smart-bracelet" class="btn btn-accent">Shop now</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">VITALBAND</div>
+          <p class="footer-tag">Premium everyday fitness tracking. Designed for real life, built to last.</p>
+        </div>
+        <div class="footer-col">
+          <h3>Shop</h3>
+          <ul>
+            <li><a href="/product.html?slug=smart-bracelet">Smart Bracelet</a></li>
+            <li><a href="/track.html">Track order</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="mailto:support@vitalband.example">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="/#">About</a></li>
+            <li><a href="/#">Sustainability</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 VitalBand. All rights reserved.</span>
+        <span>Payments secured by Stripe.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
