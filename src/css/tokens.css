@@ -40,9 +40,14 @@
   --space-9: 96px;
   --space-10: 128px;
 
-  --radius-s: 2px;
-  --radius-m: 4px;
-  --radius-l: 8px;
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 20px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 8px 24px rgba(10, 10, 10, 0.08);
+  --shadow-elevated: 0 16px 40px rgba(10, 10, 10, 0.16);
+  --shadow-button: 0 10px 24px rgba(10, 10, 10, 0.14);
 
   --container-max: 1360px;
   --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
@@ -50,7 +55,7 @@
   --dur-base: 280ms;
   --dur-slow: 480ms;
 
-  --nav-height: 72px;
+  --nav-height: 64px;
 }
 
 /* Brand identity is intentionally fixed (paper/ink), not tied to OS theme —

@@ -108,16 +108,16 @@ h1, h2, h3, h4, p { margin: 0; }
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 16px 32px;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  border-radius: var(--radius-s);
-  transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard);
+  padding: 17px 30px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-button);
+  transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard), transform var(--dur-fast) var(--ease-standard), border-color var(--dur-fast) var(--ease-standard), box-shadow var(--dur-fast) var(--ease-standard);
   white-space: nowrap;
 }
-.btn:active { transform: scale(0.98); }
+.btn:active { transform: scale(0.97); box-shadow: var(--shadow-soft); }
 
 .btn-primary {
   background: var(--color-black);
@@ -127,11 +127,12 @@ h1, h2, h3, h4, p { margin: 0; }
 .btn-primary:hover { background: #262626; }
 
 .btn-secondary {
-  background: transparent;
+  background: var(--bg-elevated);
   color: var(--fg);
   border: 1px solid var(--border-strong);
+  box-shadow: none;
 }
-.btn-secondary:hover { border-color: var(--fg); }
+.btn-secondary:hover { border-color: var(--fg); box-shadow: var(--shadow-soft); }
 
 .btn-accent {
   background: var(--color-accent);
@@ -140,13 +141,42 @@ h1, h2, h3, h4, p { margin: 0; }
 }
 .btn-accent:hover { background: #d4ff66; }
 
+.btn-white {
+  background: var(--color-white);
+  color: var(--color-black);
+  border: 1px solid var(--color-white);
+}
+.btn-white:hover { background: #f0f0f0; }
+
+.btn-lg {
+  padding: 20px 40px;
+  font-size: 16px;
+}
+
 .btn-block { width: 100%; }
 
 .btn[disabled] {
   opacity: 0.45;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(245, 244, 239, 0.92);
+  color: var(--color-black);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-pill);
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
+}
+.badge-pill .stars-mini { color: #e8a33d; letter-spacing: 1px; }
 
 .eyebrow {
   display: inline-block;

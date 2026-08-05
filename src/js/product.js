@@ -14,6 +14,20 @@ initNav();
 const cartDrawer = initCartDrawer();
 initSearch();
 initNotifications();
+initAccordion();
+
+function initAccordion() {
+  document.querySelectorAll('.product-accordion .faq-item').forEach((item) => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    question.addEventListener('click', () => {
+      const isOpen = item.getAttribute('data-open') === 'true';
+      item.setAttribute('data-open', String(!isOpen));
+      question.setAttribute('aria-expanded', String(!isOpen));
+      answer.style.maxHeight = !isOpen ? `${answer.scrollHeight}px` : '0px';
+    });
+  });
+}
 
 const params = new URLSearchParams(window.location.search);
 const slug = params.get('slug') || config.productSlug;
@@ -273,10 +287,13 @@ function renderReviews(reviews) {
       (r) => `
       <div class="review-item">
         <div class="review-head">
-          <span class="review-author">${escapeHtml(r.author_name)}</span>
-          ${r.is_demo ? '<span class="demo-badge">Demo</span>' : ''}
+          <span class="review-avatar">${escapeHtml((r.author_name || '?').charAt(0).toUpperCase())}</span>
+          <div>
+            <span class="review-author">${escapeHtml(r.author_name)}</span>
+            <div class="stars" style="font-size:12px;">${starString(r.rating)}</div>
+          </div>
+          ${r.is_demo ? '<span class="demo-badge" style="margin-left:auto;">Demo</span>' : ''}
         </div>
-        <div class="stars" style="margin-top:6px;">${starString(r.rating)}</div>
         ${r.title ? `<div class="review-title">${escapeHtml(r.title)}</div>` : ''}
         <p class="review-body">${escapeHtml(r.body)}</p>
       </div>`
