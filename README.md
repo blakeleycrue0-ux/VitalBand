@@ -181,31 +181,48 @@ polls Supabase for whatever the webhook has already confirmed.
 
 ## 5. CJdropshipping configuration
 
-**Read this before enabling real orders.** CJ's documentation site blocks
-automated fetches, so the client in `netlify/functions/utils/cjClient.js`
-was built from what's publicly confirmed (via CJ's own search-indexed docs)
-as of this build:
+CJ's documentation site itself blocks automated fetches, so
+`netlify/functions/utils/cjClient.js` was verified a different way: against
+the actual source code of two independently-published, currently-maintained
+npm packages that implement this same CJ API end-to-end. That's real,
+working client code rather than a guess, and it cross-confirmed:
 
 - Base URL: `https://developers.cjdropshipping.com/api2.0/v1`
-- Auth: `POST /authentication/getAccessToken`, then `CJ-Access-Token: <token>`
-  header on every other request
-- Confirmed endpoints: `product/list`, `product/query`,
-  `product/variant/query`, `product/comments`, `logistic/trackInfo`
-- Rate limit: 1 request/second
+- Auth: `POST /authentication/getAccessToken` with body `{ email, password }`
+  — **both fields are required**, `password` is the API key from CJ
+  Personal Center → API → Get API Key. The API key alone is not sufficient.
+- `CJ-Access-Token: <token>` header on every other request
+- Token lifetime: access token 15 days, refresh token 180 days
+- Confirmed endpoints: `product/query`, `product/list`,
+  `product/variant/query`, `product/variant/queryByVid`,
+  `product/stock/queryByVid`, `product/stock/queryBySku`,
+  `product/getCategory`, `logistic/trackInfo`,
+  `shopping/order/createOrderV2`, `shopping/order/getOrderDetail`,
+  `shopping/order/list`, `shopping/order/confirmOrder`,
+  `shopping/order/deleteOrder`
+- Rate limit: 1 request/second; response envelope is
+  `{ code, result: boolean, message, data, requestId }`
 
-The **order-creation request/response shape** (the "Shopping" module) could
-not be independently re-verified from this environment — `createCjOrder()`
-in `cjClient.js` isolates a best-guess shape in one place with an inline
-comment. **Before going live**, log into your CJ account, open
-`developers.cjdropshipping.com/en/api/api2/` in a real browser, and confirm
-the `getAccessToken` and order-creation payloads match what's implemented,
-adjusting `cjClient.js` if not.
-
-Set:
+Both credentials are required:
 ```
 CJ_EMAIL=            # your CJ account email
 CJ_API_KEY=           # from CJ Personal Center → API → Get API Key
 ```
+
+### Testing authentication before anything else
+
+`netlify/functions/cj-test-auth.js` calls **only**
+`authentication/getAccessToken` — it never touches products, inventory, or
+orders. It returns `{ success: true/false, message, ...expiry dates }` and
+never echoes the access token, refresh token, or your API key. Call it with:
+
+```bash
+curl -H "x-internal-key: <your INTERNAL_FUNCTIONS_KEY>" \
+  "https://<your-site>.netlify.app/.netlify/functions/cj-test-auth"
+```
+
+Do not wire up product import or order creation until this returns
+`success: true`.
 
 ### Why the `cj-*.js` functions require a key
 
