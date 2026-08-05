@@ -44,16 +44,20 @@ Customer → Website → Cart → Checkout → Stripe → Netlify Function
     stripe-webhook.js         Verifies payment, confirms the order, triggers CJ fulfillment
     order-lookup.js            Customer order tracking (order number + email)
     order-by-session.js         Success-page order lookup by Stripe session id
-    cj-product.js                 }
-    cj-inventory.js                } Internal/admin CJdropshipping proxies —
-    cj-create-order.js              } see "CJdropshipping configuration" below
-    cj-order-status.js              }
-    cj-tracking.js                }
+    cj-test.js                    }
+    cj-test-auth.js                 }
+    cj-product.js                     } Internal/admin CJdropshipping proxies —
+    cj-inventory.js                     } see "CJdropshipping configuration" below
+    cj-import-product.js                  }
+    cj-create-order.js                  }
+    cj-order-status.js                }
+    cj-tracking.js                  }
     /utils                     Shared server-side helpers (Supabase admin client,
-                                 Stripe client, CJ API client, response helpers)
+                                 Stripe client, CJ API client, CJ import logic,
+                                 response helpers)
 
 /supabase
-  /migrations               SQL schema, RLS policies, storage bucket
+  /migrations               SQL schema, RLS policies, storage bucket, CJ supplier tables
   /seed                      Seed data (the Smart Bracelet product + demo content)
 
 .env.example               All environment variables, public vs private
@@ -222,18 +226,58 @@ curl -H "x-internal-key: <your INTERNAL_FUNCTIONS_KEY>" \
 ```
 
 Do not wire up product import or order creation until this returns
-`success: true`.
+`success: true`. `cj-test.js` goes one step further — it authenticates
+**and** fetches one real product (`product/query`), returning only safe
+fields (name, SKU, category, image URLs, variant list) and never CJ's sell
+price or the access token:
+
+```bash
+curl -H "x-internal-key: <your INTERNAL_FUNCTIONS_KEY>" \
+  "https://<your-site>.netlify.app/.netlify/functions/cj-test?cjProductId=2406110317591609800"
+```
+
+### Importing a product from CJ
+
+`netlify/functions/cj-import-product.js` fetches a CJ product + its
+variants + real per-variant stock, and syncs it into Supabase — **without
+ever overwriting your storefront branding** (name, price, description,
+images you've set). Two layers exist for this reason:
+
+- `cj_products` / `cj_product_variants` — a private, service-role-only
+  mirror of CJ's *raw* data, including CJ's sell price to us (our cost).
+  These tables have RLS enabled with **no public policies**, same as
+  `customers`/`orders` — the anon key can never read them, so cost data
+  can never leak to a customer.
+- `products` / `product_variants` / `product_images` — your storefront,
+  linked to the raw data by `cj_product_id` / `cj_variant_id` /
+  `cj_variant_sku`. A re-sync only ever *links* existing rows (matching CJ
+  variants to yours by name — "Black" ↔ "Black" — and updating
+  `inventory_count`/IDs) or, for a CJ variant that doesn't match anything
+  you already have, creates a new **draft** row (`is_active = false`) so
+  nothing new appears to customers until you review and publish it.
+
+Call it with the product ID from the CJ product URL (the number at the end,
+e.g. `.../p-2406110317591609800.html` → `2406110317591609800`), and
+`targetSlug` to link to a specific existing storefront product:
+
+```bash
+curl -X POST -H "x-internal-key: <your INTERNAL_FUNCTIONS_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{"cjProductId": "2406110317591609800", "targetSlug": "smart-bracelet"}' \
+  "https://<your-site>.netlify.app/.netlify/functions/cj-import-product"
+```
 
 ### Why the `cj-*.js` functions require a key
 
-`cj-product.js`, `cj-inventory.js`, `cj-create-order.js`,
-`cj-order-status.js` and `cj-tracking.js` are **not** called by the
-storefront — the browser never talks to CJ directly, and the automatic
-checkout flow calls the CJ client in-process from `stripe-webhook.js`. These
-five HTTP endpoints exist for future admin/back-office use (manual product
-sync, retrying a failed fulfillment, refreshing tracking) and are guarded by
-an `x-internal-key` header checked against `INTERNAL_FUNCTIONS_KEY` — set
-that to a long random value (`openssl rand -hex 32`) and keep it private.
+`cj-test.js`, `cj-test-auth.js`, `cj-product.js`, `cj-inventory.js`,
+`cj-import-product.js`, `cj-create-order.js`, `cj-order-status.js` and
+`cj-tracking.js` are **not** called by the storefront — the browser never
+talks to CJ directly, and the automatic checkout flow calls the CJ client
+in-process from `stripe-webhook.js`. These HTTP endpoints exist for
+admin/back-office use (testing the connection, importing/syncing products,
+retrying a failed fulfillment, refreshing tracking) and are guarded by an
+`x-internal-key` header checked against `INTERNAL_FUNCTIONS_KEY` — set that
+to a long random value (`openssl rand -hex 32`) and keep it private.
 
 ---
 
@@ -324,22 +368,27 @@ Controlled by `VITE_NOTIFICATIONS_ENABLED` / `VITE_NOTIFICATIONS_MODE`
   (friendly JSON error, correct status code, no stack trace) when its
   required credentials aren't set — verified by invoking each handler
   directly with mock events.
-- What could **not** be verified without live credentials (clearly marked
-  "requires credentials" — implemented, not tested end-to-end): an actual
-  Stripe checkout + webhook round trip, a real CJdropshipping
-  authentication/order-creation call, and Supabase reads/writes against a
-  live project.
+- The CJ import logic (`netlify/functions/utils/cjImport.js`) was verified
+  against mocked CJ + Supabase responses (matching variants get linked
+  without touching branding, unmatched ones become drafts, cost data never
+  leaves the private `cj_products`/`cj_product_variants` tables) — this
+  confirms the logic itself, not a live call.
+- What could **not** be verified without live network access (clearly
+  marked "requires credentials"/"run this yourself" — implemented, not
+  tested end-to-end from this environment): an actual Stripe checkout +
+  webhook round trip, a real CJdropshipping authentication/product/order
+  call, and Supabase reads/writes against a live project.
 
 ---
 
 ## 11. What you still need to provide
 
-1. A Supabase project — run the migrations + seed, then paste its URL/keys in.
-2. Real CJdropshipping product + variant IDs for the Smart Bracelet, once
-   listed in your CJ account (`cj_product_id`, `cj_variant_id`).
-3. A CJ account API key (`CJ_EMAIL` / `CJ_API_KEY`), and 10 minutes to
-   confirm the order-creation request shape against CJ's current docs in a
-   real browser (see §5).
+1. A Supabase project — run the migrations (including `0004_cj_supplier_data.sql`) + seed, then paste its URL/keys in.
+2. `CJ_EMAIL` in Netlify — only `CJ_API_KEY` has been set so far, and CJ's
+   API requires both. Run `cj-test-auth` after adding it to confirm.
+3. Once `cj-test-auth` succeeds, run `cj-import-product` for
+   `cjProductId: "2406110317591609800"` to pull in the real product/variant
+   data and stock — see §5.
 4. A Stripe account (secret key, publishable key, webhook secret).
 5. A real Rose Gold product photo, plus more angles (display close-up,
    strap detail, packaging) — silver/black studio shots and a lifestyle
