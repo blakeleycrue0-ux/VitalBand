@@ -25,7 +25,7 @@ values (
   'A minimal, all-day fitness bracelet built for real life. Continuous heart-rate tracking, sleep analysis, activity monitoring and smart notifications — in a lightweight band that looks as good in a meeting as it does on a run.',
   4900,
   'EUR',
-  'https://placehold.co/1600x2000/0a0a0a/f5f5f0?text=VitalBand',
+  '/images/bracelet-lifestyle-running.png',
   4.9,
   2400,
   null, -- configure with real CJ product ID before going live
@@ -49,23 +49,27 @@ where p.slug = 'smart-bracelet'
 on conflict (sku) do nothing;
 
 -- Images -----------------------------------------------------------------
--- Placeholder images (placehold.co) so the gallery renders during development.
--- Replace with real product photography uploaded to the "product-images"
--- Supabase Storage bucket, or any configurable public image URL.
+-- Real product photography (shipped as static files in /public/images — see
+-- public/images/bracelet-*.png). Only 3 angles are available so far: a
+-- generic/silver studio shot, a black-variant studio shot, and a lifestyle
+-- running shot. There is no real photo yet for Rose Gold — it intentionally
+-- falls back to the generic (variant_id null) images below rather than
+-- showing a fabricated Rose Gold photo. Add more angles (display close-up,
+-- strap detail, packaging, a real Rose Gold shot) as they become available.
 insert into public.product_images (product_id, variant_id, url, alt_text, is_primary, sort_order)
-select p.id, null, img.url, img.alt_text, img.is_primary, img.sort_order
+select p.id, null, '/images/bracelet-silver-studio.png', 'VitalBand smart bracelet, silver/white woven band, studio shot', true, 0
 from public.products p
-cross join (
-  values
-    ('https://placehold.co/1200x1500/0a0a0a/f5f5f0?text=VitalBand+1', 'VitalBand smart bracelet, front view', true, 0),
-    ('https://placehold.co/1200x1500/111111/f5f5f0?text=VitalBand+2', 'VitalBand smart bracelet, worn on wrist', false, 1),
-    ('https://placehold.co/1200x1500/1a1a1a/f5f5f0?text=VitalBand+3', 'VitalBand smart bracelet, side profile', false, 2),
-    ('https://placehold.co/1200x1500/0a0a0a/f5f5f0?text=VitalBand+4', 'VitalBand smart bracelet, display close-up', false, 3),
-    ('https://placehold.co/1200x1500/141414/f5f5f0?text=VitalBand+5', 'VitalBand smart bracelet, heart rate sensor detail', false, 4),
-    ('https://placehold.co/1200x1500/0a0a0a/f5f5f0?text=VitalBand+6', 'VitalBand smart bracelet, strap detail', false, 5),
-    ('https://placehold.co/1200x1500/111111/f5f5f0?text=VitalBand+7', 'VitalBand smart bracelet, lifestyle, running', false, 6),
-    ('https://placehold.co/1200x1500/1a1a1a/f5f5f0?text=VitalBand+8', 'VitalBand smart bracelet, packaging', false, 7)
-) as img(url, alt_text, is_primary, sort_order)
+where p.slug = 'smart-bracelet';
+
+insert into public.product_images (product_id, variant_id, url, alt_text, is_primary, sort_order)
+select p.id, null, '/images/bracelet-lifestyle-running.png', 'VitalBand smart bracelet worn while running outdoors', false, 1
+from public.products p
+where p.slug = 'smart-bracelet';
+
+insert into public.product_images (product_id, variant_id, url, alt_text, is_primary, sort_order)
+select p.id, v.id, '/images/bracelet-black-studio.png', 'VitalBand smart bracelet, black woven band, studio shot', false, 2
+from public.products p
+join public.product_variants v on v.product_id = p.id and v.sku = 'VB-SB-BLACK'
 where p.slug = 'smart-bracelet';
 
 -- Reviews (demo/development content — see notice above) -----------------------
@@ -92,7 +96,7 @@ on conflict do nothing;
 -- Site settings ----------------------------------------------------------
 insert into public.site_settings (key, value)
 values
-  ('hero', '{"image_url": "https://placehold.co/1600x2000/0a0a0a/f5f5f0?text=VitalBand", "image_alt": "VitalBand smart bracelet hero image"}'),
+  ('hero', '{"image_url": "/images/bracelet-lifestyle-running.png", "image_alt": "VitalBand smart bracelet worn while running outdoors"}'),
   ('notifications', '{"enabled": true, "mode": "demo", "min_interval_seconds": 8, "max_interval_seconds": 15, "visible_seconds": 5}'),
   ('brand', '{"name": "VitalBand", "accent_color": "#c6ff3d"}')
 on conflict (key) do update set value = excluded.value, updated_at = now();
