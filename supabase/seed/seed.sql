@@ -81,7 +81,11 @@ cross join (
     ('Alex', 5, 'Wear it every day', 'Sample/demo review for development. Comfortable band, easy to read the display outdoors, and the battery lasts as advertised.'),
     ('Jordan', 5, 'Good for training', 'Sample/demo review for development. Heart rate readings during runs have tracked closely with my chest strap.'),
     ('Sam', 4, 'Solid everyday tracker', 'Sample/demo review for development. Sleek enough for the office, tough enough for the gym. Would like more strap color options.'),
-    ('Riley', 5, 'Clean design', 'Sample/demo review for development. Doesn''t look like a typical fitness tracker — much closer to a minimal watch.')
+    ('Riley', 5, 'Clean design', 'Sample/demo review for development. Doesn''t look like a typical fitness tracker — much closer to a minimal watch.'),
+    ('Morgan', 5, 'Great gift', 'Sample/demo review for development. Bought one for my partner too — packaging felt premium and setup was quick.'),
+    ('Casey', 4, 'Comfortable for sleep tracking', 'Sample/demo review for development. Light enough to wear overnight, and the sleep summary in the app is easy to read.'),
+    ('Taylor', 5, 'Battery really does last', 'Sample/demo review for development. I charge it once a week and that''s genuinely enough for my routine.'),
+    ('Jamie', 3, 'Good, with one caveat', 'Sample/demo review for development. Works well day to day, but I wish the strap came in one more length option.')
 ) as r(author_name, rating, title, body)
 where p.slug = 'smart-bracelet';
 
@@ -98,5 +102,17 @@ insert into public.site_settings (key, value)
 values
   ('hero', '{"image_url": "/images/bracelet-lifestyle-running.png", "image_alt": "VitalBand smart bracelet worn while running outdoors"}'),
   ('notifications', '{"enabled": true, "mode": "demo", "min_interval_seconds": 8, "max_interval_seconds": 15, "visible_seconds": 5}'),
-  ('brand', '{"name": "VitalBand", "accent_color": "#c6ff3d"}')
+  ('brand', '{"name": "VitalBand", "accent_color": "#c6ff3d"}'),
+  -- Promo bar: OFF by default (enabled: false) with no real end_at, so
+  -- nothing false is ever shown to a customer. Turn it on only when you have
+  -- a genuine time-limited offer, with its real end date/time — the
+  -- countdown is a real timer against `end_at`, not a fake one that resets.
+  -- Example to activate a real 48-hour promo:
+  --   update public.site_settings set value = jsonb_build_object(
+  --     'enabled', true,
+  --     'message', 'Free shipping this week —',
+  --     'code', 'SHIP49',
+  --     'end_at', (now() + interval '48 hours')
+  --   ) where key = 'promo';
+  ('promo', '{"enabled": false, "message": "", "code": null, "end_at": null}')
 on conflict (key) do update set value = excluded.value, updated_at = now();

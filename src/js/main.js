@@ -8,6 +8,7 @@ import { initSearch } from './search.js';
 import { initNotifications } from './notifications.js';
 import { initReveal } from './reveal.js';
 import { setCanonical } from './seo.js';
+import { initPromoBar } from './promoBar.js';
 
 setCanonical('/');
 initNav();
@@ -15,6 +16,7 @@ initCartDrawer();
 initSearch();
 initNotifications();
 initReveal();
+initPromoBar();
 initFaq();
 loadHeroImage();
 loadShowcase();

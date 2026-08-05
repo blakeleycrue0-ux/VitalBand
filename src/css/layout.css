@@ -1,4 +1,43 @@
 /* ---------------------------------------------------------------------------
+   Promo bar (real, configurable countdown — see src/js/promoBar.js).
+   Not sticky: it scrolls away, then the nav below sticks at top:0 on its own.
+--------------------------------------------------------------------------- */
+.promo-bar {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+.promo-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: 10px var(--space-5);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+}
+.promo-message strong { color: var(--color-accent); }
+.promo-countdown {
+  font-variant-numeric: tabular-nums;
+  background: rgba(245, 244, 239, 0.14);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.promo-close {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(245, 244, 239, 0.7);
+  font-size: 16px;
+  padding: 4px;
+}
+.promo-close:hover { color: var(--color-white); }
+
+/* ---------------------------------------------------------------------------
    Sticky navigation
 --------------------------------------------------------------------------- */
 .site-header {
@@ -122,11 +161,70 @@
   transition: transform var(--dur-slow) var(--ease-standard);
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .mobile-menu.is-open { transform: translateX(0); }
-.mobile-menu-head { display: flex; justify-content: space-between; align-items: center; padding: var(--space-5); border-bottom: 1px solid var(--border); }
-.mobile-menu-links { padding: var(--space-6) var(--space-5); display: flex; flex-direction: column; gap: var(--space-5); }
-.mobile-menu-links a { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; }
+.mobile-menu-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 1;
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-menu-feature {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-5);
+  padding: var(--space-3);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-soft);
+}
+.mobile-menu-feature-img {
+  width: 64px; height: 76px;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.mobile-menu-feature-img img { width: 100%; height: 100%; object-fit: cover; }
+.mobile-menu-feature-copy .eyebrow { display: block; }
+.mobile-menu-feature-copy strong { display: block; font-size: 16px; font-weight: 700; margin-top: 2px; }
+.mobile-menu-feature-copy span.price { display: block; font-size: 14px; color: var(--fg-muted); margin-top: 2px; }
+
+.mobile-menu-links {
+  padding: 0 var(--space-5);
+  display: flex;
+  flex-direction: column;
+}
+.mobile-menu-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-menu-links a svg { width: 16px; height: 16px; color: var(--fg-muted); flex-shrink: 0; }
+
+.mobile-menu-foot {
+  margin-top: auto;
+  padding: var(--space-6) var(--space-5) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-size: 14px;
+  color: var(--fg-muted);
+}
+.mobile-menu-foot a:hover { color: var(--fg); }
 
 /* ---------------------------------------------------------------------------
    Footer

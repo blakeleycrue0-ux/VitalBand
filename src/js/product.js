@@ -9,11 +9,13 @@ import { initNotifications } from './notifications.js';
 import { startCheckout } from './checkout.js';
 import { config } from './config.js';
 import { setCanonical } from './seo.js';
+import { initPromoBar } from './promoBar.js';
 
 initNav();
 const cartDrawer = initCartDrawer();
 initSearch();
 initNotifications();
+initPromoBar();
 initAccordion();
 
 function initAccordion() {

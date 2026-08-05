@@ -41,6 +41,14 @@
 <body class="has-fixed-action-bar">
   <a href="#main-content" class="skip-link">Skip to content</a>
 
+  <div class="promo-bar" id="promo-bar" hidden>
+    <div class="promo-bar-inner">
+      <span class="promo-message" id="promo-message"></span>
+      <span class="promo-countdown" id="promo-countdown"></span>
+      <button class="promo-close" id="promo-close" type="button" aria-label="Dismiss">&times;</button>
+    </div>
+  </div>
+
   <header class="site-header">
     <div class="container nav-row">
       <button class="icon-btn menu-toggle" data-menu-open aria-label="Open menu"><span></span></button>
@@ -69,13 +77,28 @@
       <span class="nav-logo">VITALBAND</span>
       <button class="icon-btn" data-menu-close aria-label="Close menu">&times;</button>
     </div>
+
+    <a href="/product.html?slug=smart-bracelet" class="mobile-menu-feature">
+      <span class="mobile-menu-feature-img"><img src="/images/bracelet-silver-studio.png" alt="" loading="lazy" width="64" height="76" /></span>
+      <span class="mobile-menu-feature-copy">
+        <span class="eyebrow">Featured</span>
+        <strong>Smart Bracelet</strong>
+        <span class="price">&euro;49.00</span>
+      </span>
+    </a>
+
     <nav class="mobile-menu-links" aria-label="Mobile">
-      <a href="/#product">Shop</a>
-      <a href="/#features">Features</a>
-      <a href="/#testimonials">Reviews</a>
-      <a href="/#faq">FAQ</a>
-      <a href="/track.html">Track order</a>
+      <a href="/#product">Shop <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/#features">Features <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/#testimonials">Reviews <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/#faq">FAQ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/track.html">Track order <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
     </nav>
+
+    <div class="mobile-menu-foot">
+      <a href="mailto:support@vitalband.example">Contact support</a>
+      <span>Free shipping worldwide &middot; 30-day returns</span>
+    </div>
   </div>
 
   <div class="drawer-overlay" data-cart-overlay></div>
