@@ -1,0 +1,9 @@
+{
+  "name": "blakewebs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Blakewebs — landing page (static, sin build step: HTML/CSS/JS embebidos en index.html).",
+  "scripts": {
+    "build": "echo 'Sitio estático, sin build step necesario.'"
+  }
+}
