@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:labs",
+    "build:labs": "node scripts/build-labs.mjs",
     "preview": "vite preview",
     "functions:build": "echo 'Netlify Functions are plain ESM/CJS modules, no build step required'"
   },
