@@ -1,0 +1,74 @@
+:root {
+  /* Neutral palette */
+  --color-black: #0a0a0a;
+  --color-ink: #141414;
+  --color-charcoal: #2a2a29;
+  --color-stone: #6f6f6c;
+  --color-mist: #b9b8b2;
+  --color-fog: #e7e5df;
+  --color-paper: #f5f4ef;
+  --color-white: #ffffff;
+
+  /* One restrained accent */
+  --color-accent: #c6ff3d;
+  --color-accent-ink: #1c2b06;
+
+  /* Semantic */
+  --bg: var(--color-paper);
+  --bg-elevated: var(--color-white);
+  --fg: var(--color-black);
+  --fg-muted: var(--color-stone);
+  --border: rgba(10, 10, 10, 0.12);
+  --border-strong: rgba(10, 10, 10, 0.24);
+
+  --danger: #b3261e;
+  --success: #1e6b3e;
+
+  /* Type */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 20px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 8px 24px rgba(10, 10, 10, 0.08);
+  --shadow-elevated: 0 16px 40px rgba(10, 10, 10, 0.16);
+  --shadow-button: 0 10px 24px rgba(10, 10, 10, 0.14);
+
+  --container-max: 1360px;
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 480ms;
+
+  --nav-height: 64px;
+}
+
+/* Brand identity is intentionally fixed (paper/ink), not tied to OS theme —
+   consistent, controlled contrast is part of the premium presentation.
+   The "dark" surfaces below are used deliberately for specific sections
+   (e.g. footer, final CTA) rather than as a global toggle. */
+.surface-dark {
+  --bg: var(--color-black);
+  --bg-elevated: var(--color-ink);
+  --fg: var(--color-paper);
+  --fg-muted: var(--color-mist);
+  --border: rgba(245, 244, 239, 0.14);
+  --border-strong: rgba(245, 244, 239, 0.28);
+  background: var(--bg);
+  color: var(--fg);
+}

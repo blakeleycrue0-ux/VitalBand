@@ -1,0 +1,24 @@
+{
+  "name": "vitalband",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VitalBand — premium smart bracelet ecommerce storefront (Supabase + Netlify Functions + CJdropshipping).",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && npm run build:labs",
+    "build:labs": "node scripts/build-labs.mjs",
+    "preview": "vite preview",
+    "functions:build": "echo 'Netlify Functions are plain ESM/CJS modules, no build step required'"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "stripe": "^16.12.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.8"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

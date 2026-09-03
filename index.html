@@ -1,1355 +1,391 @@
-<!DOCTYPE html>
-<html lang="es">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Blakewebs — Diseño y desarrollo web a medida</title>
-<meta name="description" content="Blakewebs: diseño y desarrollo de páginas web a medida. Rápidas, a medida y sin plantillas. Landing, corporativas y tiendas online.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VitalBand — Your Health, At a Glance | Smart Bracelet</title>
+  <meta name="description" content="Track your heart rate, activity, sleep and more in the VitalBand Smart Bracelet — a sleek, premium everyday fitness tracker. Free shipping, 4.9/5 rated." />
+  <!-- Canonical URL is set client-side (see main.js:setCanonical) to avoid
+       Vite treating a relative link[href] to another page as a build asset. -->
+  <link rel="canonical" id="canonical-link" />
 
-<!-- ==========================================================
-     FUENTES: Space Grotesk (titulares) + Newsreader (editorial/detalle)
-     ========================================================== -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="VitalBand" />
+  <meta property="og:title" content="VitalBand — Your Health, At a Glance" />
+  <meta property="og:description" content="Track your heart rate, activity, sleep and more in a sleek everyday bracelet." />
+  <meta property="og:image" content="/images/bracelet-lifestyle-running.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-<style>
-/* ==========================================================
-   0. RESET Y BASE
-   ========================================================== */
-:root{
-  --bg: #0a0a0a;
-  --bg-soft: #111111;
-  --ink: #f3f3ef;
-  --ink-dim: #8f8f8a;
-  --line: #232323;
-  --accent: #d8ff3f;      /* verde lima eléctrico — acento principal */
-  --accent-2: #ff5a2d;    /* naranja eléctrico — acento secundario */
-  --card: #131313;
-  --radius: 18px;
-  --ff-head: 'Space Grotesk', system-ui, sans-serif;
-  --ff-body: 'Newsreader', Georgia, serif;
-  --ease: cubic-bezier(.16,1,.3,1);
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="/src/css/main.css" />
 
-*, *::before, *::after{ box-sizing: border-box; }
-html{
-  background: var(--bg);
-  scroll-behavior: auto; /* el smooth scroll lo controla el JS */
-}
-body{
-  margin:0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--ff-body);
-  font-size: 17px;
-  line-height: 1.5;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-img{ max-width:100%; display:block; }
-a{ color:inherit; text-decoration:none; }
-ul{ margin:0; padding:0; list-style:none; }
-button{ font-family: inherit; cursor:pointer; }
-::selection{ background: var(--accent); color:#0a0a0a; }
-
-h1,h2,h3,h4{
-  font-family: var(--ff-head);
-  font-weight: 500;
-  line-height: 1.02;
-  margin:0;
-  letter-spacing: -0.02em;
-}
-
-.wrap{
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 6vw;
-}
-
-.eyebrow{
-  font-family: var(--ff-head);
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 12.5px;
-  color: var(--accent);
-  display:flex;
-  align-items:center;
-  gap: 10px;
-}
-.eyebrow::before{
-  content:'';
-  width: 26px;
-  height: 1px;
-  background: var(--accent);
-  display:inline-block;
-}
-
-/* Scroll container driven by JS (inertia smooth-scroll) */
-#scroll-content{
-  will-change: transform;
-}
-
-/* ==========================================================
-   1. LOADER
-   ========================================================== */
-#loader{
-  position: fixed; inset:0;
-  background: var(--bg);
-  z-index: 9999;
-  display:flex;
-  flex-direction: column;
-  align-items:center;
-  justify-content:center;
-  gap: 22px;
-  transition: opacity .8s var(--ease), visibility .8s var(--ease);
-}
-#loader.hidden{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
-.loader-word{
-  font-family: var(--ff-head);
-  font-size: clamp(28px, 6vw, 54px);
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  overflow:hidden;
-}
-.loader-word span{
-  display:inline-block;
-  transform: translateY(110%);
-  animation: loaderUp .7s var(--ease) forwards;
-}
-@keyframes loaderUp{ to{ transform: translateY(0); } }
-.loader-bar-track{
-  width: min(260px, 60vw);
-  height: 2px;
-  background: var(--line);
-  position: relative;
-  overflow: hidden;
-}
-.loader-bar-fill{
-  position:absolute; left:0; top:0; bottom:0;
-  width: 0%;
-  background: var(--accent);
-  transition: width .25s linear;
-}
-.loader-pct{
-  font-family: var(--ff-head);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  color: var(--ink-dim);
-}
-
-/* ==========================================================
-   2. CURSOR PERSONALIZADO (desktop only)
-   ========================================================== */
-.cursor-dot, .cursor-ring{
-  position: fixed;
-  top:0; left:0;
-  pointer-events:none;
-  z-index: 9998;
-  transform: translate(-50%,-50%);
-  border-radius: 50%;
-}
-.cursor-dot{
-  width:6px; height:6px;
-  background: var(--accent);
-}
-.cursor-ring{
-  width:38px; height:38px;
-  border: 1px solid rgba(216,255,63,0.5);
-  transition: width .25s var(--ease), height .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family: var(--ff-head);
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  color: var(--bg);
-  text-transform: uppercase;
-}
-.cursor-ring.big{
-  width: 90px; height:90px;
-  background: var(--accent);
-  border-color: var(--accent);
-}
-.cursor-ring.big span{ opacity:1; }
-.cursor-ring span{
-  opacity:0;
-  transition: opacity .2s var(--ease);
-}
-body.no-cursor .cursor-dot,
-body.no-cursor .cursor-ring{ display:none; }
-
-@media (hover:hover) and (pointer:fine){
-  body{ cursor:none; }
-  a, button, .tilt-card{ cursor:none; }
-}
-
-/* ==========================================================
-   3. HEADER
-   ========================================================== */
-header{
-  position: fixed;
-  top:0; left:0; right:0;
-  z-index: 500;
-  padding: 22px 6vw;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  transition: background .4s var(--ease), backdrop-filter .4s var(--ease), border-color .4s var(--ease), padding .4s var(--ease);
-  border-bottom: 1px solid transparent;
-}
-header.scrolled{
-  background: rgba(10,10,10,0.7);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  border-bottom: 1px solid var(--line);
-  padding: 14px 6vw;
-}
-.logo{
-  font-family: var(--ff-head);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.logo::after{
-  content:'';
-  width:7px; height:7px;
-  border-radius:50%;
-  background: var(--accent);
-  display:inline-block;
-}
-nav{ display:flex; gap: 34px; align-items:center; }
-nav a{
-  font-family: var(--ff-head);
-  font-size: 13.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink-dim);
-  position: relative;
-  padding-bottom: 3px;
-}
-nav a::after{
-  content:'';
-  position:absolute; left:0; bottom:0;
-  width:0; height:1px;
-  background: var(--accent);
-  transition: width .3s var(--ease);
-}
-nav a:hover{ color: var(--ink); }
-nav a:hover::after{ width:100%; }
-.nav-cta{
-  font-family: var(--ff-head);
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border: 1px solid var(--line);
-  padding: 10px 18px;
-  border-radius: 100px;
-  transition: border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
-}
-.nav-cta:hover{ border-color: var(--accent); }
-@media (max-width: 860px){
-  nav a:not(.nav-cta){ display:none; }
-}
-
-/* ==========================================================
-   4. HERO
-   ========================================================== */
-.hero{
-  min-height: 100svh;
-  display:flex;
-  flex-direction: column;
-  justify-content:center;
-  position: relative;
-  padding: 140px 6vw 80px;
-  overflow: hidden;
-}
-#hero-canvas{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  z-index:0;
-  opacity: 0.55;
-}
-.hero-inner{ position: relative; z-index:2; }
-.hero-title{
-  font-size: clamp(46px, 9.2vw, 132px);
-  color: var(--ink);
-  margin: 18px 0 26px;
-}
-.hero-title .line{ overflow:hidden; display:block; }
-.hero-title .word{
-  display:inline-block;
-  transform: translateY(115%) rotate(3deg);
-  opacity:0;
-}
-.hero-title em{
-  font-style: normal;
-  color: var(--accent);
-}
-.hero-sub{
-  font-family: var(--ff-body);
-  font-style: italic;
-  font-size: clamp(17px, 2vw, 22px);
-  color: var(--ink-dim);
-  max-width: 560px;
-  margin-bottom: 44px;
-}
-.hero-actions{
-  display:flex;
-  align-items:center;
-  gap: 26px;
-  flex-wrap: wrap;
-}
-.btn-primary{
-  position: relative;
-  display:inline-flex;
-  align-items:center;
-  gap:12px;
-  background: var(--accent);
-  color: #0a0a0a;
-  font-family: var(--ff-head);
-  font-size: 14.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 18px 30px;
-  border-radius: 100px;
-  border:none;
-  overflow: hidden;
-  isolation: isolate;
-}
-.btn-primary span{ position:relative; z-index:2; display:flex; align-items:center; gap:10px; }
-.btn-primary .arrow{ transition: transform .35s var(--ease); }
-.btn-primary:hover .arrow{ transform: translateX(6px); }
-.btn-primary::before{
-  content:'';
-  position:absolute; inset:0;
-  background: var(--ink);
-  transform: translateY(101%);
-  transition: transform .45s var(--ease);
-  z-index:1;
-  border-radius: inherit;
-}
-.btn-primary:hover::before{ transform: translateY(0); }
-.btn-primary:hover{ color: var(--bg); }
-.btn-primary:hover span{ color:#0a0a0a; }
-
-.hero-meta{
-  font-family: var(--ff-head);
-  font-size: 12.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--ink-dim);
-}
-.scroll-cue{
-  position:absolute;
-  bottom: 40px; left: 6vw;
-  display:flex; align-items:center; gap:12px;
-  z-index:2;
-  font-family: var(--ff-head);
-  font-size: 11.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-}
-.scroll-cue .line-anim{
-  width:1px; height:38px;
-  background: var(--line);
-  position:relative;
-  overflow:hidden;
-}
-.scroll-cue .line-anim::after{
-  content:'';
-  position:absolute; top:-100%; left:0; right:0; height:100%;
-  background: var(--accent);
-  animation: scrollcue 1.8s ease-in-out infinite;
-}
-@keyframes scrollcue{
-  0%{ top:-100%; }
-  50%{ top:100%; }
-  50.01%{ top:-100%; }
-  100%{ top:100%; }
-}
-
-/* ==========================================================
-   5. SECCIONES GENERALES / REVEAL
-   ========================================================== */
-section{ position: relative; padding: 150px 0; }
-.section-head{
-  margin-bottom: 70px;
-  max-width: 780px;
-}
-.section-head h2{
-  font-size: clamp(34px, 5.4vw, 68px);
-  margin-top: 18px;
-}
-.mask-reveal{
-  overflow:hidden;
-}
-.mask-reveal > *{
-  transform: translateY(100%);
-  transition: transform 1s var(--ease);
-}
-.mask-reveal.in > *{ transform: translateY(0); }
-
-.fade-up{
-  opacity:0;
-  transform: translateY(46px);
-  transition: opacity .9s var(--ease), transform .9s var(--ease);
-}
-.fade-up.in{ opacity:1; transform: translateY(0); }
-
-.grow-line{
-  width:100%; height:1px;
-  background: var(--line);
-  position:relative;
-  margin: 0;
-  overflow:hidden;
-}
-.grow-line::after{
-  content:'';
-  position:absolute; left:0; top:0; bottom:0;
-  width:0%;
-  background: var(--accent);
-  transition: width 1.1s var(--ease);
-}
-.grow-line.in::after{ width:100%; }
-
-/* ==========================================================
-   6. QUE HAGO
-   ========================================================== */
-.about{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items:start;
-}
-.about-lead{
-  font-family: var(--ff-head);
-  font-size: clamp(24px, 3vw, 36px);
-  font-weight: 400;
-  line-height: 1.25;
-  color: var(--ink);
-}
-.about-lead .hl{ color: var(--accent); }
-.about-list{ display:flex; flex-direction: column; }
-.about-item{
-  padding: 26px 0;
-  border-top: 1px solid var(--line);
-  display:grid;
-  grid-template-columns: 50px 1fr;
-  gap: 20px;
-}
-.about-list .about-item:last-child{ border-bottom: 1px solid var(--line); }
-.about-item .num{
-  font-family: var(--ff-head);
-  color: var(--accent);
-  font-size: 13px;
-}
-.about-item h4{
-  font-size: 19px;
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: var(--ink);
-}
-.about-item p{
-  color: var(--ink-dim);
-  font-size: 15.5px;
-  margin:0;
-}
-@media (max-width: 860px){
-  .about{ grid-template-columns: 1fr; }
-}
-
-/* ==========================================================
-   7. PACKS (pricing)
-   ========================================================== */
-.packs-grid{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 26px;
-}
-@media (max-width: 980px){
-  .packs-grid{ grid-template-columns: 1fr; }
-}
-.tilt-card{
-  position: relative;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 40px 32px;
-  overflow: hidden;
-  transform-style: preserve-3d;
-  transition: border-color .4s var(--ease), transform .1s linear;
-  will-change: transform;
-}
-.tilt-card .spotlight{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background: radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(216,255,63,0.13), transparent 70%);
-  opacity:0;
-  transition: opacity .4s var(--ease);
-}
-.tilt-card:hover .spotlight{ opacity:1; }
-.tilt-card:hover{ border-color: rgba(216,255,63,0.35); }
-
-.pack-badge{
-  position:absolute;
-  top: 24px; right: 24px;
-  background: var(--accent);
-  color: #0a0a0a;
-  font-family: var(--ff-head);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 7px 14px;
-  border-radius: 100px;
-}
-.pack-featured{
-  border-color: rgba(216,255,63,0.45);
-  background: linear-gradient(180deg, rgba(216,255,63,0.06), var(--card) 40%);
-}
-.pack-name{
-  font-family: var(--ff-body);
-  font-style: italic;
-  font-size: 15px;
-  color: var(--ink-dim);
-  margin-bottom: 14px;
-}
-.pack-title{
-  font-size: 30px;
-  margin-bottom: 22px;
-  min-height: 66px;
-}
-.pack-price{
-  display:flex;
-  align-items:baseline;
-  gap: 8px;
-  margin-bottom: 30px;
-  font-family: var(--ff-head);
-}
-.pack-price .from{
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink-dim);
-}
-.pack-price .amount{
-  font-size: 46px;
-  color: var(--ink);
-}
-.pack-price .amount .count-up{ display:inline; }
-.pack-price .amount .euro{ font-size: 28px; color: var(--accent); }
-.pack-features{ margin-bottom: 34px; }
-.pack-features li{
-  display:flex;
-  align-items:flex-start;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1px solid var(--line);
-  font-size: 14.5px;
-  color: #c9c9c4;
-}
-.pack-features li::before{
-  content:'';
-  width:5px; height:5px;
-  margin-top: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink:0;
-}
-.pack-cta{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  padding: 16px;
-  border-radius: 100px;
-  border: 1px solid var(--line);
-  font-family: var(--ff-head);
-  font-size: 13.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
-}
-.pack-cta:hover{
-  background: var(--ink);
-  color: var(--bg);
-  border-color: var(--ink);
-}
-.pack-featured .pack-cta{
-  background: var(--accent);
-  color: #0a0a0a;
-  border-color: var(--accent);
-}
-.pack-featured .pack-cta:hover{
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--bg);
-}
-
-/* ==========================================================
-   8. ADD-ONS + MARQUEE
-   ========================================================== */
-.marquee-wrap{
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  padding: 26px 0;
-  overflow: hidden;
-  white-space: nowrap;
-  margin-bottom: 90px;
-}
-.marquee-track{
-  display:inline-flex;
-  gap: 60px;
-  will-change: transform;
-}
-.marquee-track span{
-  font-family: var(--ff-head);
-  font-size: clamp(22px, 3.2vw, 42px);
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  letter-spacing: -0.01em;
-  display:inline-flex;
-  align-items:center;
-  gap: 60px;
-}
-.marquee-track span em{
-  font-style: normal;
-  color: var(--accent);
-}
-.marquee-track span::after{
-  content:'—';
-  color: var(--line);
-  margin-left: 60px;
-}
-
-.addons-grid{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  overflow:hidden;
-}
-@media (max-width: 900px){
-  .addons-grid{ grid-template-columns: repeat(2,1fr); }
-}
-@media (max-width: 620px){
-  .addons-grid{ grid-template-columns: 1fr; }
-}
-.addon-item{
-  background: var(--bg-soft);
-  padding: 34px 28px;
-  transition: background .35s var(--ease);
-  position: relative;
-}
-.addon-item:hover{ background: #17170f; }
-.addon-item .idx{
-  font-family: var(--ff-head);
-  font-size: 11.5px;
-  color: var(--accent);
-  letter-spacing: 0.1em;
-}
-.addon-item h4{
-  font-size: 19px;
-  font-weight: 500;
-  margin: 14px 0 8px;
-}
-.addon-item .price{
-  font-family: var(--ff-head);
-  font-size: 14px;
-  color: var(--ink-dim);
-}
-
-/* ==========================================================
-   9. PROCESO
-   ========================================================== */
-.process-grid{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-}
-@media (max-width: 900px){
-  .process-grid{ grid-template-columns: repeat(2,1fr); }
-}
-@media (max-width: 560px){
-  .process-grid{ grid-template-columns: 1fr; }
-}
-.process-step{
-  padding-top: 26px;
-  border-top: 1px solid var(--line);
-}
-.process-step .step-num{
-  font-family: var(--ff-head);
-  font-size: 54px;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--accent);
-  display:block;
-  margin-bottom: 22px;
-}
-.process-step h4{
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-.process-step p{
-  color: var(--ink-dim);
-  font-size: 14.5px;
-  margin:0;
-}
-
-/* ==========================================================
-   10. CONTACTO
-   ========================================================== */
-.contact{
-  position: relative;
-  text-align:center;
-}
-.contact-title{
-  font-size: clamp(40px, 8vw, 110px);
-  margin: 20px auto 36px;
-  max-width: 950px;
-}
-.contact-title em{ font-style: normal; color: var(--accent); }
-.contact-actions{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap: 22px;
-  flex-wrap:wrap;
-  margin-bottom: 50px;
-}
-.btn-ghost{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding: 18px 30px;
-  border-radius: 100px;
-  border: 1px solid var(--line);
-  font-family: var(--ff-head);
-  font-size: 14.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  transition: border-color .3s var(--ease), color .3s var(--ease);
-}
-.btn-ghost:hover{ border-color: var(--accent); color: var(--accent); }
-.contact-phone{
-  font-family: var(--ff-head);
-  font-size: clamp(30px, 5vw, 46px);
-  color: var(--ink);
-  display:inline-block;
-  position: relative;
-}
-.contact-phone::after{
-  content:'';
-  position:absolute; left:0; right:0; bottom:-6px;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .4s var(--ease);
-}
-.contact-phone:hover::after{ transform: scaleX(1); }
-
-/* ==========================================================
-   11. FOOTER
-   ========================================================== */
-footer{
-  border-top: 1px solid var(--line);
-  padding: 34px 6vw;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  font-family: var(--ff-head);
-  font-size: 12.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink-dim);
-}
-footer a:hover{ color: var(--accent); }
-
-/* ==========================================================
-   12. UTILIDADES
-   ========================================================== */
-.magnetic{ display:inline-block; }
-@media (max-width: 720px){
-  section{ padding: 100px 0; }
-  .hero{ padding-top: 120px; }
-}
-
-/* Respeta usuarios con reduced motion */
-@media (prefers-reduced-motion: reduce){
-  *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-}
-</style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Smart Watch Smart Bracelet Sports Heart Rate",
+    "brand": { "@type": "Brand", "name": "VitalBand" },
+    "description": "Track your heart rate, activity, sleep and more in a sleek everyday bracelet.",
+    "image": ["/images/bracelet-silver-studio.png"],
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "EUR",
+      "price": "49.00",
+      "availability": "https://schema.org/InStock",
+      "url": "/product.html?slug=smart-bracelet"
+    }
+  }
+  </script>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
 
-<!-- ============ LOADER ============ -->
-<div id="loader" aria-hidden="true">
-  <div class="loader-word" id="loaderWord"></div>
-  <div class="loader-bar-track"><div class="loader-bar-fill" id="loaderBar"></div></div>
-  <div class="loader-pct" id="loaderPct">0%</div>
-</div>
+  <div class="promo-bar" id="promo-bar" hidden>
+    <div class="promo-bar-inner">
+      <span class="promo-message" id="promo-message"></span>
+      <span class="promo-countdown" id="promo-countdown"></span>
+      <button class="promo-close" id="promo-close" type="button" aria-label="Dismiss">&times;</button>
+    </div>
+  </div>
 
-<!-- ============ CURSOR CUSTOM ============ -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"><span id="cursorLabel"></span></div>
-
-<!-- ============ HEADER ============ -->
-<header id="siteHeader">
-  <a href="#top" class="logo">Blakewebs</a>
-  <nav>
-    <a href="#que-hago" data-hover="cursor">Qué hago</a>
-    <a href="#packs" data-hover="cursor">Packs</a>
-    <a href="#addons" data-hover="cursor">Add-ons</a>
-    <a href="#proceso" data-hover="cursor">Proceso</a>
-    <a href="#contacto" class="nav-cta magnetic" data-hover="cursor">Empezar proyecto</a>
-  </nav>
-</header>
-
-<!-- Contenedor que el "smooth scroll" mueve con transform -->
-<div id="scroll-content">
-
-  <!-- ============ HERO ============ -->
-  <section class="hero" id="top">
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-inner wrap">
-      <div class="eyebrow">Diseño &amp; desarrollo web a medida</div>
-      <h1 class="hero-title" id="heroTitle">
-        <span class="line"><span class="word">Webs</span> <span class="word">que</span> <span class="word">se</span></span>
-        <span class="line"><span class="word"><em>ven</em></span> <span class="word">bien</span> <span class="word">y</span></span>
-        <span class="line"><span class="word">venden</span> <span class="word">mejor.</span></span>
-      </h1>
-      <p class="hero-sub">Diseño y código a medida, sin plantillas genéricas. Rápido de cargar, cuidado al detalle, hecho para convertir visitas en clientes.</p>
-      <div class="hero-actions">
-        <a href="#contacto" class="btn-primary magnetic" data-hover="cursor"><span>Empezar proyecto <svg class="arrow" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
-        <div class="hero-meta">Proyectos desde 250€ — respuesta en 24h</div>
+  <header class="site-header">
+    <div class="container nav-row">
+      <button class="icon-btn menu-toggle" data-menu-open aria-label="Open menu"><span></span></button>
+      <a href="/" class="nav-logo">VITALBAND</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/#product">Shop</a>
+        <a href="/#features">Features</a>
+        <a href="/#testimonials">Reviews</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/track.html">Track order</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" data-search-open aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <button class="icon-btn" data-cart-open aria-label="Open cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <span class="cart-count">0</span>
+        </button>
       </div>
     </div>
-    <div class="scroll-cue"><div class="line-anim"></div><span>Scroll</span></div>
-  </section>
+  </header>
 
-  <!-- ============ QUE HAGO ============ -->
-  <section id="que-hago">
-    <div class="wrap">
-      <div class="section-head mask-reveal">
-        <div class="eyebrow">Qué hago</div>
-        <h2>Diseño web que no parece plantilla.</h2>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu-head">
+      <span class="nav-logo">VITALBAND</span>
+      <button class="icon-btn" data-menu-close aria-label="Close menu">&times;</button>
+    </div>
+
+    <a href="/product.html?slug=smart-bracelet" class="mobile-menu-feature">
+      <span class="mobile-menu-feature-img"><img src="/images/bracelet-silver-studio.png" alt="" loading="lazy" width="64" height="76" /></span>
+      <span class="mobile-menu-feature-copy">
+        <span class="eyebrow">Featured</span>
+        <strong>Smart Bracelet</strong>
+        <span class="price">&euro;49.00</span>
+      </span>
+    </a>
+
+    <nav class="mobile-menu-links" aria-label="Mobile">
+      <a href="/#product">Shop <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/#features">Features <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/#testimonials">Reviews <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/#faq">FAQ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a href="/track.html">Track order <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
+    </nav>
+
+    <div class="mobile-menu-foot">
+      <a href="mailto:support@vitalband.example">Contact support</a>
+      <span>Free shipping worldwide &middot; 30-day returns</span>
+    </div>
+  </div>
+
+  <div class="drawer-overlay" data-cart-overlay></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-hidden="true" aria-label="Shopping cart">
+    <div class="cart-drawer-head">
+      <h2>Cart</h2>
+      <button class="icon-btn" data-cart-close aria-label="Close cart">&times;</button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-body"></div>
+    <div class="cart-drawer-foot" id="cart-drawer-foot" hidden>
+      <div class="cart-subtotal-row"><span>Subtotal</span><span id="cart-subtotal">&euro;0.00</span></div>
+      <button class="btn btn-primary btn-block" id="cart-checkout-btn" type="button">Checkout</button>
+      <button class="cart-continue" data-cart-close type="button">Continue shopping</button>
+      <p class="cart-note">Shipping calculated at checkout. Payments secured by Stripe.</p>
+    </div>
+  </aside>
+
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <div class="search-overlay-head">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="22" height="22"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="search" id="search-input" class="search-input" placeholder="Search products, features, FAQ…" autocomplete="off" />
       </div>
-      <div class="about">
-        <p class="about-lead fade-up">Construyo páginas web <span class="hl">a medida</span>, con código limpio (HTML, CSS y JS), sin plantillas genéricas ni builders pesados. Rápidas de cargar, fáciles de mantener y pensadas para que tu negocio destaque desde el primer segundo.</p>
-        <div class="about-list">
-          <div class="about-item fade-up">
-            <span class="num">01</span>
-            <div><h4>Diseño a medida</h4><p>Cada web se diseña desde cero según tu marca, no desde una plantilla reciclada.</p></div>
+      <button class="icon-btn" data-search-close aria-label="Close search">&times;</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+
+  <div class="notification-stack" id="notification-stack" aria-live="polite"></div>
+
+  <main id="main-content">
+    <!-- Hero: full-bleed image with overlaid content -->
+    <section class="hero">
+      <div class="hero-media">
+        <img id="hero-image" src="/images/bracelet-lifestyle-running.png" alt="VitalBand smart bracelet worn while running outdoors" width="896" height="1200" fetchpriority="high" />
+      </div>
+
+      <div class="hero-badge-row">
+        <span class="badge-pill"><span class="stars-mini">★★★★★</span> 4.9/5 · 2,400+ reviews</span>
+      </div>
+
+      <div class="hero-copy reveal">
+        <h1 class="hero-headline">Your health.<br />At a glance.</h1>
+        <p class="hero-sub">Track your heart rate, activity, sleep and more — in a sleek everyday bracelet.</p>
+        <div class="hero-actions">
+          <a href="/product.html?slug=smart-bracelet" class="btn btn-white btn-lg">Shop now</a>
+          <a href="#features" class="btn btn-secondary btn-lg" style="background:rgba(255,255,255,0.1);color:#fff;border-color:rgba(255,255,255,0.4);">Explore features</a>
+        </div>
+        <div class="hero-trust-line">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg>
+          Free shipping worldwide · 30-day money-back guarantee
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust bar -->
+    <section class="trust-bar">
+      <div class="container trust-row">
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h13l-3-3m3 3-3 3"/><rect x="16" y="6" width="5" height="12" rx="1"/></svg></span>
+          <span><strong>Free</strong>Shipping worldwide</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/></svg></span>
+          <span><strong>30-Day</strong>Returns</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/></svg></span>
+          <span><strong>1-Year</strong>Warranty</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg></span>
+          <span><strong>Secure</strong>Checkout via Stripe</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product showcase -->
+    <section class="section" id="product">
+      <div class="container">
+        <div class="showcase">
+          <div class="showcase-media reveal">
+            <img id="showcase-image" src="/images/bracelet-silver-studio.png" alt="VitalBand smart bracelet detail" loading="lazy" width="896" height="1200" />
           </div>
-          <div class="about-item fade-up">
-            <span class="num">02</span>
-            <div><h4>Código limpio</h4><p>HTML, CSS y JS bien escritos, sin dependencias innecesarias que ralenticen tu web.</p></div>
-          </div>
-          <div class="about-item fade-up">
-            <span class="num">03</span>
-            <div><h4>Velocidad real</h4><p>Sitios ligeros que cargan rápido, buenos para SEO y para la experiencia del usuario.</p></div>
+          <div class="showcase-copy reveal">
+            <span class="eyebrow">The Smart Bracelet</span>
+            <h2 class="section-head-title" style="font-size:clamp(28px,4vw,42px);font-weight:700;letter-spacing:-0.02em;margin-top:12px;">Smart Watch Smart Bracelet</h2>
+            <p class="section-head-desc" style="color:var(--fg-muted);margin-top:12px;max-width:48ch;">Continuous heart-rate tracking, sleep analysis and smart notifications in a band light enough to forget you're wearing it.</p>
+            <div class="showcase-price" id="showcase-price">&euro;49.00</div>
+            <div class="showcase-variants" id="showcase-variants" aria-label="Available colors"></div>
+            <div class="showcase-actions">
+              <a href="/product.html?slug=smart-bracelet" class="btn btn-primary">View product</a>
+              <button type="button" class="btn btn-secondary" data-quick-add>Add to cart</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ============ PACKS ============ -->
-  <section id="packs">
-    <div class="wrap">
-      <div class="section-head mask-reveal">
-        <div class="eyebrow">Packs</div>
-        <h2>Elige el punto de partida.</h2>
-      </div>
-      <div class="packs-grid">
-
-        <!-- Pack Básico -->
-        <div class="tilt-card fade-up">
-          <div class="spotlight"></div>
-          <div class="pack-name">Para arrancar</div>
-          <h3 class="pack-title">Pack Esencial</h3>
-          <div class="pack-price">
-            <span class="from">Desde</span>
-            <span class="amount"><span class="count-up" data-target="250">0</span><span class="euro">€</span></span>
+    <!-- Features -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Why VitalBand</span>
+          <h2>Built for everyday performance.</h2>
+          <p>No unnecessary complexity — just the metrics that matter, delivered clearly.</p>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card reveal">
+            <div class="feature-index">01</div>
+            <h3>Continuous heart rate</h3>
+            <p>Real-time tracking that keeps up with training, recovery and everything in between.</p>
           </div>
-          <ul class="pack-features">
-            <li>Web de una sola página (landing)</li>
-            <li>Diseño a medida, 100% responsive</li>
-            <li>Formulario de contacto funcional</li>
-            <li>Hosting básico configurado</li>
-            <li>Ideal para autónomos y negocios pequeños</li>
+          <div class="feature-card reveal">
+            <div class="feature-index">02</div>
+            <h3>Sleep analysis</h3>
+            <p>Understand your sleep stages and recovery so you can adjust before it affects you.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">03</div>
+            <h3>10-day battery</h3>
+            <p>Built to disappear into daily life — charge on your schedule, not the device's.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">04</div>
+            <h3>Water resistant</h3>
+            <p>Rated for rain, sweat and washing your hands — not built to sit in a drawer.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">05</div>
+            <h3>Smart notifications</h3>
+            <p>Calls, messages and alerts at a glance, without pulling out your phone.</p>
+          </div>
+          <div class="feature-card reveal">
+            <div class="feature-index">06</div>
+            <h3>Companion app</h3>
+            <p>Clean, focused reporting — trends over time, not noise.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lifestyle imagery -->
+    <section class="section">
+      <div class="container">
+        <div class="lifestyle-grid">
+          <div class="lifestyle-tile reveal">
+            <img src="/images/bracelet-lifestyle-running.png" alt="VitalBand worn during a morning run" loading="lazy" width="896" height="1200" />
+          </div>
+          <div class="lifestyle-tile reveal">
+            <img src="/images/bracelet-black-studio.png" alt="VitalBand smart bracelet, black variant, studio shot" loading="lazy" width="896" height="1200" />
+          </div>
+          <div class="lifestyle-tile reveal">
+            <img src="https://placehold.co/900x560/1a1a1a/f5f5f0?text=VitalBand" alt="VitalBand worn at the gym" loading="lazy" width="900" height="560" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">How it works</span>
+          <h2>From checkout to your wrist.</h2>
+        </div>
+        <div class="steps-row">
+          <div class="step-card reveal">
+            <div class="step-number">1</div>
+            <h3>Order securely</h3>
+            <p>Checkout is handled entirely by Stripe — VitalBand never sees or stores your card details.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-number">2</div>
+            <h3>We fulfill and ship</h3>
+            <p>Once payment is confirmed, your order is sent for fulfillment and a tracking number is generated.</p>
+          </div>
+          <div class="step-card reveal">
+            <div class="step-number">3</div>
+            <h3>Track and enjoy</h3>
+            <p>Follow your shipment any time from the order tracking page using your order number and email.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" id="testimonials">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Reviews</span>
+          <h2>What people are saying.</h2>
+        </div>
+        <div class="testimonial-track" id="testimonial-track">
+          <div class="skeleton" style="flex:0 0 min(420px,85vw); height:220px;"></div>
+          <div class="skeleton" style="flex:0 0 min(420px,85vw); height:220px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">FAQ</span>
+          <h2>Good to know.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              How long does the battery last?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Up to 10 days on a single charge with typical use, including continuous heart-rate tracking and notifications.</p></div>
+          </div>
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              Is it water resistant?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Yes — it's rated for rain, sweat and hand washing. It is not intended for swimming or submersion.</p></div>
+          </div>
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              What's your return policy?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>30 days from delivery. If it's not right for you, contact support for a straightforward return.</p></div>
+          </div>
+          <div class="faq-item reveal" data-open="false">
+            <button class="faq-question" aria-expanded="false">
+              How do I track my order?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer"><p>Use the <a href="/track.html" style="text-decoration:underline;">order tracking page</a> with your order number and the email used at checkout.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta surface-dark">
+      <div class="container reveal">
+        <span class="eyebrow">Ready when you are</span>
+        <h2>Your health.<br />At a glance.</h2>
+        <a href="/product.html?slug=smart-bracelet" class="btn btn-accent">Shop now</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">VITALBAND</div>
+          <p class="footer-tag">Premium everyday fitness tracking. Designed for real life, built to last.</p>
+        </div>
+        <div class="footer-col">
+          <h3>Shop</h3>
+          <ul>
+            <li><a href="/product.html?slug=smart-bracelet">Smart Bracelet</a></li>
+            <li><a href="/track.html">Track order</a></li>
           </ul>
-          <a href="#contacto" class="pack-cta" data-hover="cursor">Elegir Esencial</a>
         </div>
-
-        <!-- Pack Pro -->
-        <div class="tilt-card pack-featured fade-up">
-          <span class="pack-badge">Más popular</span>
-          <div class="spotlight"></div>
-          <div class="pack-name">Para crecer</div>
-          <h3 class="pack-title">Pack Impulso</h3>
-          <div class="pack-price">
-            <span class="from">Desde</span>
-            <span class="amount"><span class="count-up" data-target="500">0</span><span class="euro">€</span></span>
-          </div>
-          <ul class="pack-features">
-            <li>Web multipágina (hasta 5 secciones)</li>
-            <li>Animaciones y efectos visuales a medida</li>
-            <li>Optimización SEO básica</li>
-            <li>Integración con redes sociales</li>
-            <li>Panel simple de contacto</li>
+        <div class="footer-col">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="/#faq">FAQ</a></li>
+            <li><a href="mailto:support@vitalband.example">Contact</a></li>
           </ul>
-          <a href="#contacto" class="pack-cta" data-hover="cursor">Elegir Impulso</a>
         </div>
-
-        <!-- Pack Premium -->
-        <div class="tilt-card fade-up">
-          <div class="spotlight"></div>
-          <div class="pack-name">Sin límites</div>
-          <h3 class="pack-title">Pack Signature</h3>
-          <div class="pack-price">
-            <span class="from">Desde</span>
-            <span class="amount"><span class="count-up" data-target="900">0</span><span class="euro">€</span></span>
-          </div>
-          <ul class="pack-features">
-            <li>Todo lo del Pack Impulso, y más</li>
-            <li>Tienda online o sistema a medida (reservas, formularios avanzados, base de datos)</li>
-            <li>Animaciones avanzadas</li>
-            <li>Dominio y hosting incluidos el primer año</li>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="/#">About</a></li>
+            <li><a href="/#">Sustainability</a></li>
           </ul>
-          <a href="#contacto" class="pack-cta" data-hover="cursor">Elegir Signature</a>
         </div>
-
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 VitalBand. All rights reserved.</span>
+        <span>Payments secured by Stripe.</span>
       </div>
     </div>
-  </section>
-
-  <!-- ============ ADD-ONS ============ -->
-  <section id="addons">
-    <div class="marquee-wrap">
-      <div class="marquee-track" id="marqueeTrack">
-        <span>Extras a medida <em>para cualquier pack</em></span>
-        <span>Extras a medida <em>para cualquier pack</em></span>
-        <span>Extras a medida <em>para cualquier pack</em></span>
-        <span>Extras a medida <em>para cualquier pack</em></span>
-      </div>
-    </div>
-    <div class="wrap">
-      <div class="section-head mask-reveal">
-        <div class="eyebrow">Add-ons</div>
-        <h2>Complementa tu pack.</h2>
-      </div>
-      <div class="addons-grid fade-up">
-        <div class="addon-item"><span class="idx">01</span><h4>Mantenimiento mensual</h4><p class="price">Desde 30€/mes</p></div>
-        <div class="addon-item"><span class="idx">02</span><h4>SEO avanzado</h4><p class="price">Desde 100€</p></div>
-        <div class="addon-item"><span class="idx">03</span><h4>Copywriting profesional</h4><p class="price">Desde 80€</p></div>
-        <div class="addon-item"><span class="idx">04</span><h4>Diseño de logo / identidad</h4><p class="price">Desde 60€</p></div>
-        <div class="addon-item"><span class="idx">05</span><h4>Página adicional</h4><p class="price">40€/página</p></div>
-        <div class="addon-item"><span class="idx">06</span><h4>Gestión de redes sociales</h4><p class="price">A consultar</p></div>
-        <div class="addon-item"><span class="idx">07</span><h4>Dominio + hosting anual</h4><p class="price">Desde 40€/año</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ PROCESO ============ -->
-  <section id="proceso">
-    <div class="wrap">
-      <div class="section-head mask-reveal">
-        <div class="eyebrow">Proceso</div>
-        <h2>Cuatro pasos, sin fricción.</h2>
-      </div>
-      <div class="process-grid">
-        <div class="process-step fade-up"><span class="step-num">01</span><h4>Contacto y briefing</h4><p>Me cuentas qué necesitas, tu negocio y tus referencias.</p></div>
-        <div class="process-step fade-up"><span class="step-num">02</span><h4>Propuesta y diseño</h4><p>Te presento un diseño a medida antes de escribir una línea de código.</p></div>
-        <div class="process-step fade-up"><span class="step-num">03</span><h4>Desarrollo</h4><p>Construyo la web con código limpio, rápido y responsive.</p></div>
-        <div class="process-step fade-up"><span class="step-num">04</span><h4>Entrega y ajustes</h4><p>Revisamos juntos y afinamos hasta que quede perfecta.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CONTACTO ============ -->
-  <section id="contacto" class="contact">
-    <div class="wrap">
-      <div class="eyebrow" style="justify-content:center;">Hablemos de tu proyecto</div>
-      <h2 class="contact-title mask-reveal"><span>¿Empezamos <em>tu web</em> hoy?</span></h2>
-      <div class="contact-actions">
-        <a href="https://wa.me/34630455607" target="_blank" rel="noopener" class="btn-primary magnetic" data-hover="cursor"><span>Escribir por WhatsApp</span></a>
-        <a href="tel:+34630455607" class="btn-ghost magnetic" data-hover="cursor">Llamar ahora</a>
-      </div>
-      <a href="tel:+34630455607" class="contact-phone magnetic" data-hover="cursor">630 45 56 07</a>
-    </div>
-  </section>
-
-  <!-- ============ FOOTER ============ -->
-  <footer>
-    <span>Blakewebs &copy; 2026</span>
-    <a href="tel:+34630455607">630 45 56 07</a>
   </footer>
 
-</div><!-- /#scroll-content -->
-
-<script>
-(function(){
-"use strict";
-
-/* ==========================================================
-   0. DETECCION DE ENTORNO
-   ========================================================== */
-var isTouch = matchMedia('(hover:hover) and (pointer:fine)').matches === false;
-var reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(isTouch){ document.body.classList.add('no-cursor'); }
-
-/* ==========================================================
-   1. LOADER
-   ========================================================== */
-var loaderWord = document.getElementById('loaderWord');
-"BLAKEWEBS".split('').forEach(function(ch, i){
-  var span = document.createElement('span');
-  span.textContent = ch === ' ' ? ' ' : ch;
-  span.style.animationDelay = (i * 0.035) + 's';
-  loaderWord.appendChild(span);
-});
-
-var loaderBar = document.getElementById('loaderBar');
-var loaderPct = document.getElementById('loaderPct');
-var progress = 0;
-var loaderInterval = setInterval(function(){
-  progress += Math.random() * 18;
-  if(progress >= 100){ progress = 100; clearInterval(loaderInterval); finishLoad(); }
-  loaderBar.style.width = progress + '%';
-  loaderPct.textContent = Math.floor(progress) + '%';
-}, 120);
-
-function finishLoad(){
-  setTimeout(function(){
-    document.getElementById('loader').classList.add('hidden');
-    document.body.classList.add('loaded');
-    playHeroIntro();
-  }, 280);
-}
-// Salvaguarda por si algo tarda demasiado
-setTimeout(function(){
-  if(!document.body.classList.contains('loaded')){ clearInterval(loaderInterval); finishLoad(); }
-}, 3200);
-
-/* ==========================================================
-   2. HERO: animacion de titulo palabra a palabra
-   ========================================================== */
-function playHeroIntro(){
-  var words = document.querySelectorAll('.hero-title .word');
-  words.forEach(function(w, i){
-    setTimeout(function(){
-      w.style.transition = 'transform .9s cubic-bezier(.16,1,.3,1), opacity .7s ease';
-      w.style.transform = 'translateY(0) rotate(0deg)';
-      w.style.opacity = '1';
-    }, i * 55);
-  });
-}
-
-/* ==========================================================
-   3. SMOOTH SCROLL CON INERCIA (vanilla, tipo Lenis)
-   ========================================================== */
-var scrollEl = document.getElementById('scroll-content');
-var current = 0, target = 0;
-var ease = 0.085;
-var docHeight = 0;
-
-function setBodyHeight(){
-  docHeight = scrollEl.getBoundingClientRect().height;
-  document.body.style.height = docHeight + 'px';
-}
-setBodyHeight();
-window.addEventListener('resize', setBodyHeight);
-window.addEventListener('load', setBodyHeight);
-// Recalcular tras la carga de fuentes/imagenes por si cambia el layout
-setTimeout(setBodyHeight, 600);
-setTimeout(setBodyHeight, 1500);
-
-var smoothEnabled = !reducedMotion && !isTouch;
-
-function raf(){
-  if(smoothEnabled){
-    target = window.scrollY;
-    current += (target - current) * ease;
-    if(Math.abs(target - current) < 0.05) current = target;
-    scrollEl.style.transform = 'translate3d(0,' + (-current) + 'px,0)';
-  } else {
-    scrollEl.style.transform = 'none';
-  }
-  updateParallax(current);
-  requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
-
-/* ==========================================================
-   4. HEADER: fondo blur al hacer scroll
-   ========================================================== */
-var header = document.getElementById('siteHeader');
-function updateHeader(){
-  if(window.scrollY > 40){ header.classList.add('scrolled'); }
-  else{ header.classList.remove('scrolled'); }
-}
-window.addEventListener('scroll', updateHeader, { passive:true });
-
-/* ==========================================================
-   5. PARALLAX (canvas de fondo del hero se mueve mas lento)
-   ========================================================== */
-var heroCanvasEl = document.getElementById('hero-canvas');
-function updateParallax(scrollPos){
-  if(heroCanvasEl){
-    heroCanvasEl.style.transform = 'translate3d(0,' + (scrollPos * 0.28) + 'px,0)';
-  }
-}
-
-/* ==========================================================
-   6. ANCLAS: scroll suave manual a las secciones
-   ========================================================== */
-document.querySelectorAll('a[href^="#"]').forEach(function(link){
-  link.addEventListener('click', function(e){
-    var id = link.getAttribute('href');
-    if(id.length < 2) return;
-    var targetEl = document.querySelector(id);
-    if(!targetEl) return;
-    e.preventDefault();
-    var y = targetEl.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: y, behavior: reducedMotion ? 'auto' : 'smooth' });
-  });
-});
-
-/* ==========================================================
-   7. CURSOR PERSONALIZADO
-   ========================================================== */
-if(!isTouch){
-  var dot = document.getElementById('cursorDot');
-  var ring = document.getElementById('cursorRing');
-  var label = document.getElementById('cursorLabel');
-  var mx = 0, my = 0, rx = 0, ry = 0;
-
-  window.addEventListener('mousemove', function(e){
-    mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-  });
-
-  function cursorLoop(){
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-    requestAnimationFrame(cursorLoop);
-  }
-  cursorLoop();
-
-  document.querySelectorAll('[data-hover="cursor"]').forEach(function(el){
-    el.addEventListener('mouseenter', function(){
-      ring.classList.add('big');
-      label.textContent = 'Ver';
-    });
-    el.addEventListener('mouseleave', function(){
-      ring.classList.remove('big');
-      label.textContent = '';
-    });
-  });
-
-  document.querySelectorAll('.tilt-card').forEach(function(card){
-    card.addEventListener('mouseenter', function(){
-      ring.classList.add('big');
-      label.textContent = 'Ver';
-    });
-    card.addEventListener('mouseleave', function(){
-      ring.classList.remove('big');
-      label.textContent = '';
-    });
-  });
-}
-
-/* ==========================================================
-   8. BOTONES MAGNETICOS
-   ========================================================== */
-if(!isTouch){
-  document.querySelectorAll('.magnetic').forEach(function(el){
-    var strength = 0.35;
-    el.addEventListener('mousemove', function(e){
-      var r = el.getBoundingClientRect();
-      var relX = e.clientX - (r.left + r.width/2);
-      var relY = e.clientY - (r.top + r.height/2);
-      el.style.transform = 'translate(' + (relX*strength) + 'px,' + (relY*strength) + 'px)';
-    });
-    el.addEventListener('mouseleave', function(){
-      el.style.transform = 'translate(0,0)';
-      el.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)';
-      setTimeout(function(){ el.style.transition = ''; }, 500);
-    });
-  });
-}
-
-/* ==========================================================
-   9. TILT 3D + SPOTLIGHT EN TARJETAS
-   ========================================================== */
-if(!isTouch){
-  document.querySelectorAll('.tilt-card').forEach(function(card){
-    card.addEventListener('mousemove', function(e){
-      var r = card.getBoundingClientRect();
-      var px = (e.clientX - r.left) / r.width;
-      var py = (e.clientY - r.top) / r.height;
-      var rotX = (py - 0.5) * -10;
-      var rotY = (px - 0.5) * 10;
-      card.style.transform = 'perspective(900px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateZ(0)';
-      card.style.setProperty('--mx', (px*100) + '%');
-      card.style.setProperty('--my', (py*100) + '%');
-    });
-    card.addEventListener('mouseleave', function(){
-      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
-    });
-  });
-}
-
-/* ==========================================================
-   10. INTERSECTION OBSERVER: reveal on scroll
-   ========================================================== */
-var revealObserver = new IntersectionObserver(function(entries){
-  entries.forEach(function(entry){
-    if(entry.isIntersecting){
-      entry.target.classList.add('in');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.18 });
-
-document.querySelectorAll('.fade-up, .mask-reveal, .grow-line').forEach(function(el){
-  revealObserver.observe(el);
-});
-
-/* Lineas separadoras que crecen: se insertan antes de cada section-head si no existen */
-document.querySelectorAll('.section-head').forEach(function(head){
-  var line = document.createElement('div');
-  line.className = 'grow-line';
-  head.parentNode.insertBefore(line, head);
-  revealObserver.observe(line);
-});
-
-/* ==========================================================
-   11. COUNT-UP DE PRECIOS AL ENTRAR EN VIEWPORT
-   ========================================================== */
-var countObserver = new IntersectionObserver(function(entries){
-  entries.forEach(function(entry){
-    if(entry.isIntersecting){
-      animateCount(entry.target);
-      countObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.6 });
-
-document.querySelectorAll('.count-up').forEach(function(el){ countObserver.observe(el); });
-
-function animateCount(el){
-  var target = parseInt(el.getAttribute('data-target'), 10);
-  var duration = 1400;
-  var start = null;
-  function step(ts){
-    if(!start) start = ts;
-    var progress = Math.min((ts - start) / duration, 1);
-    var eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.floor(eased * target);
-    if(progress < 1){ requestAnimationFrame(step); }
-    else{ el.textContent = target; }
-  }
-  requestAnimationFrame(step);
-}
-
-/* ==========================================================
-   12. MARQUEE REACTIVO A LA VELOCIDAD DE SCROLL
-   ========================================================== */
-var marquee = document.getElementById('marqueeTrack');
-var marqueePos = 0;
-var marqueeBaseSpeed = 0.6;
-var lastScrollY = window.scrollY;
-var scrollVelocity = 0;
-
-window.addEventListener('scroll', function(){
-  var nowY = window.scrollY;
-  scrollVelocity = nowY - lastScrollY;
-  lastScrollY = nowY;
-}, { passive:true });
-
-function marqueeLoop(){
-  var speed = marqueeBaseSpeed + Math.min(Math.abs(scrollVelocity) * 0.15, 6);
-  marqueePos -= speed;
-  var trackWidth = marquee.scrollWidth / 2;
-  if(Math.abs(marqueePos) >= trackWidth){ marqueePos = 0; }
-  marquee.style.transform = 'translateX(' + marqueePos + 'px)';
-  scrollVelocity *= 0.9;
-  requestAnimationFrame(marqueeLoop);
-}
-requestAnimationFrame(marqueeLoop);
-
-/* ==========================================================
-   13. CANVAS DE FONDO EN EL HERO: grid distorsionado sutil
-   ========================================================== */
-var canvas = document.getElementById('hero-canvas');
-if(canvas){
-  var ctx = canvas.getContext('2d');
-  var w, h, dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-  function resizeCanvas(){
-    w = canvas.offsetWidth; h = canvas.offsetHeight;
-    canvas.width = w * dpr; canvas.height = h * dpr;
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  var spacing = 42;
-  var t = 0;
-  var mouseX = 0.5, mouseY = 0.5;
-  window.addEventListener('mousemove', function(e){
-    mouseX = e.clientX / window.innerWidth;
-    mouseY = e.clientY / window.innerHeight;
-  });
-
-  function drawGrid(){
-    if(reducedMotion){ return; }
-    ctx.clearRect(0,0,w,h);
-    ctx.strokeStyle = 'rgba(216,255,63,0.10)';
-    ctx.lineWidth = 1;
-
-    var cols = Math.ceil(w/spacing) + 2;
-    var rows = Math.ceil(h/spacing) + 2;
-
-    for(var i=0;i<cols;i++){
-      ctx.beginPath();
-      for(var j=0;j<=rows;j++){
-        var x = i*spacing;
-        var y = j*spacing;
-        var dx = (mouseX*w - x);
-        var dy = (mouseY*h - y);
-        var dist = Math.sqrt(dx*dx+dy*dy);
-        var influence = Math.max(0, 1 - dist/260);
-        var offset = Math.sin(t*0.02 + i*0.5 + j*0.3) * 4 + influence * 22;
-        var px = x + offset * 0.4;
-        var py = y + offset;
-        if(j===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
-      }
-      ctx.stroke();
-    }
-    t++;
-    requestAnimationFrame(drawGrid);
-  }
-  drawGrid();
-}
-
-})();
-</script>
+  <script type="module" src="/src/js/main.js"></script>
 </body>
 </html>
